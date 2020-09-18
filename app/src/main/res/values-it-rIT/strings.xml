@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">FantaHelp</string>
+    <string name="welcome_to_the_fantahelp">Benvenuto su FantaHelp</string>
+    <string name="start">nuova partita</string>
+    <string name="load">carica</string>
+    <string name="help">aiuto</string>
+    <string name="CreateNewGameLabel">Aggiungi 4–10 utenti al gioco</string>
+    <string name="usernameMockup">username</string>
+</resources>

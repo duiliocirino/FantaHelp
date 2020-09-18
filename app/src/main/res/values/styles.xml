@@ -1,0 +1,26 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@android:color/background_dark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+    <style name="TitleStyle">
+        <item name="android:textColor">@android:color/background_light</item>
+        <item name="android:textSize">40sp</item>
+        <item name="android:gravity">center</item>
+        <item name="fontFamily">sans-serif-smallcaps</item>
+    </style>
+    <style name="ClickableStyle">
+        <item name="android:textColor">@android:color/background_light</item>
+        <item name="android:textSize">25sp</item>
+        <item name="fontFamily">sans-serif-smallcaps</item>
+        <item name="android:background">@drawable/rect</item>
+        <item name="android:gravity">center</item>
+    </style>
+    <style name="InputBox">
+        <item name="android:background">@drawable/rect</item>
+        <item name="android:textColor">@android:color/background_light</item>
+    </style>
+</resources>

@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">FantaHelp</string>
+    <string name="welcome_to_the_fantahelp">Welcome to the FantaHelp!</string>
+    <string name="start">new game</string>
+    <string name="load">load</string>
+    <string name="help">help</string>
+    <string name="CreateNewGameLabel">Add 4–10 users to the game</string>
+    <string name="usernameMockup">username</string>
+</resources>
