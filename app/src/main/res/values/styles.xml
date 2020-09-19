@@ -5,6 +5,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@android:color/background_dark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="fontFamily">sans-serif-smallcaps</item>
     </style>
     <style name="TitleStyle">
         <item name="android:textColor">@android:color/background_light</item>
@@ -18,6 +19,12 @@
         <item name="fontFamily">sans-serif-smallcaps</item>
         <item name="android:background">@drawable/rect</item>
         <item name="android:gravity">center</item>
+    </style>
+    <style name="UsernameBoxStyle">
+        <item name="android:textColor">@android:color/background_light</item>
+        <item name="android:textSize">20sp</item>
+        <item name="fontFamily">sans-serif-smallcaps</item>
+        <item name="android:background">@drawable/rect</item>
     </style>
     <style name="InputBox">
         <item name="android:background">@drawable/rect</item>
