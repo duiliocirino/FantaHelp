@@ -6,4 +6,7 @@
     <string name="help">help</string>
     <string name="CreateNewGameLabel">Add 4–10 users to the game</string>
     <string name="usernameMockup">username</string>
+    <string name="next">next</string>
+    <string name="back">back</string>
+    <string name="gameName">game name</string>
 </resources>

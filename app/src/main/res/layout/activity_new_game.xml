@@ -38,8 +38,34 @@
             android:ems="10"
             android:id="@+id/usernameInput"
             app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="16dp" android:layout_marginEnd="16dp" android:layout_marginTop="71dp"
+            android:layout_marginStart="16dp" android:layout_marginEnd="16dp"
+            android:importantForAutofill="no"
+            android:layout_marginTop="16dp" app:layout_constraintTop_toBottomOf="@+id/newGameNameInput"/>
+    <EditText
+            style="@style/InputBox"
+            android:layout_width="match_parent"
+            android:layout_height="43dp"
+            android:inputType="textPersonName"
+            android:hint="@string/gameName"
+            android:textColorHint="@android:color/background_light"
+            android:ems="10"
+            android:id="@+id/newGameNameInput"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="16dp" android:layout_marginEnd="16dp" android:layout_marginTop="16dp"
             app:layout_constraintTop_toBottomOf="@+id/textView"
-            android:layout_marginBottom="71dp" app:layout_constraintBottom_toTopOf="@+id/scrollView2"
-            android:importantForAutofill="no"/>
+            android:importantForAutofill="no" app:layout_constraintHorizontal_bias="0.0"
+    />
+    <Button
+            android:text="@string/next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/newGameNext"
+            android:layout_marginEnd="16dp" app:layout_constraintEnd_toEndOf="parent"
+            android:onClick="onNextButtonClicked"
+            app:layout_constraintTop_toTopOf="parent" android:layout_marginTop="16dp"/>
+    <Button
+            android:text="@string/back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/newGameBack"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="16dp"
+            app:layout_constraintTop_toTopOf="parent" android:layout_marginTop="16dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
