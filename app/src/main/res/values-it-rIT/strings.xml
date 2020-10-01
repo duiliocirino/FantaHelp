@@ -7,4 +7,7 @@
     <string name="help">aiuto</string>
     <string name="CreateNewGameLabel">Aggiungi 4–10 utenti al gioco</string>
     <string name="usernameMockup">username</string>
+    <string name="next">avanti</string>
+    <string name="back">indietro</string>
+    <string name="gameName">nome lega</string>
 </resources>

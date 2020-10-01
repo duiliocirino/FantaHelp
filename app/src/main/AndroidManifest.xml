@@ -9,6 +9,10 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
+        <activity android:name=".view.LoadActivity">
+        </activity>
+        <activity android:name=".view.GameActivity">
+        </activity>
         <activity android:name=".view.NewGameActivity">
         </activity>
         <activity android:name=".view.MainActivity">

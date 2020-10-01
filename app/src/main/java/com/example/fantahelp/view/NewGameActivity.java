@@ -1,11 +1,9 @@
 package com.example.fantahelp.view;
 
+import android.content.Intent;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.ScrollView;
-import android.widget.TextView;
+import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.lifecycle.ViewModelProvider;
@@ -43,7 +41,7 @@ public class NewGameActivity extends AppCompatActivity {
                 LinearLayout scrollLayout = findViewById(R.id.scrollLayout);
                 scrollLayout.addView(nameTV);
             } else{
-                //TODO: Snackbar showing the user cannot be added
+                //TODO: Toast showing the user cannot be added
             }
             return true;
         });
@@ -56,10 +54,24 @@ public class NewGameActivity extends AppCompatActivity {
     }
 
     public void onNextButtonClicked(View view) {
-        if(newGameViewModel.createGame()){
+        int gameId;
 
+        EditText gameNameInput = findViewById(R.id.newGameNameInput);
+        newGameViewModel.setGameName(gameNameInput.getText().toString());
+
+        gameId = newGameViewModel.createGame();
+        if(gameId != -1){
+            Intent intent = new Intent(NewGameActivity.this, GameActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putInt("gameId", gameId);
+            intent.putExtras(bundle);
+            startActivity(intent);
+            finish();
         } else{
-            //TODO: Snackbar showing the game cannot be created
+            Toast.makeText(NewGameActivity.this, "You cannot create a game like this", 5).show();
+            //startActivity(new Intent(NewGameActivity.this, GameActivity.class));
+
+            //TODO: Toast showing the game cannot be created
         }
     }
 }

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="@string/title_home"
+          android:id="@+id/bottomNavigationClockMenuId"
+          android:icon="@drawable/rect"/>
+    <item android:title="@string/title_dashboard"
+          android:id="@+id/bottomNavigationAlarmMenuId"
+          android:icon="@drawable/rect"/>
+    <item android:title="@string/title_settings"
+          android:id="@+id/bottomNavigationTimerMenuId"
+          android:icon="@drawable/rect"/>
+</menu>

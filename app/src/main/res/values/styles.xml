@@ -6,6 +6,7 @@
         <item name="colorPrimaryDark">@android:color/background_dark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="fontFamily">sans-serif-smallcaps</item>
+        <!--<item name="android:background">@drawable/background2</item> -->
     </style>
     <style name="TitleStyle">
         <item name="android:textColor">@android:color/background_light</item>
@@ -29,5 +30,21 @@
     <style name="InputBox">
         <item name="android:background">@drawable/rect</item>
         <item name="android:textColor">@android:color/background_light</item>
+    </style>
+    <style name="NormalStyle">NormalStyle
+        <item name="android:textColor">@android:color/background_light</item>
+        <item name="android:textSize">25sp</item>
+        <item name="fontFamily">sans-serif-smallcaps</item>
+        <item name="android:gravity">center</item>
+    </style>
+    <style name="HomeStyle">HomeStyle
+        <item name="android:textColor">@android:color/background_light</item>
+        <item name="android:textSize">16sp</item>
+        <item name="fontFamily">sans-serif-smallcaps</item>
+        <item name="android:background">@drawable/rect</item>
+        <item name="android:gravity">center</item>
+    </style>
+    <style name="MathButtons">MathButtons
+        <item name="android:textSize">24sp</item>
     </style>
 </resources>

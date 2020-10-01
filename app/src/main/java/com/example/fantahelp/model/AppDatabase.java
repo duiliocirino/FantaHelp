@@ -1,6 +1,7 @@
 package com.example.fantahelp.model;
 
 import android.content.Context;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
@@ -12,6 +13,7 @@ import com.example.fantahelp.model.daos.PlayerDao;
 import com.example.fantahelp.model.daos.SerieATeamDao;
 import com.example.fantahelp.model.daos.UserDao;
 import com.example.fantahelp.model.entities.*;
+import com.example.fantahelp.view.MainActivity;
 import com.opencsv.CSVReader;
 
 import java.io.IOException;
@@ -40,17 +42,10 @@ public abstract class AppDatabase extends RoomDatabase {
         @Override
         public void onCreate(@NonNull SupportSQLiteDatabase db) {
             super.onCreate(db);
-
-            try {
-                loadPlayers();
-                loadSquads();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
     };
 
-    public static AppDatabase getDatabase(final Context context) {
+    public static AppDatabase getDatabase(final Context context) throws IOException {
         if (INSTANCE == null) {
             synchronized (AppDatabase.class) {
                 if (INSTANCE == null) {
@@ -59,6 +54,8 @@ public abstract class AppDatabase extends RoomDatabase {
                             AppDatabase.class, "fantahelp_db")
                             .addCallback(sRoomDatabaseCallback)
                             .build();
+                    loadPlayers();
+                    loadSquads();
                 }
             }
         }
@@ -115,12 +112,14 @@ public abstract class AppDatabase extends RoomDatabase {
 
             //Log.d(TAG, "Just created: " +"Gender :" +mGender  +"Meaning :"+ mMeaning +"Name"+ mName +"Origin :" +mOrigin);
         }
-        INSTANCE.playerDao().insertAll(players);
+        databaseWriteExecutor.execute( () -> {
+            INSTANCE.playerDao().insertAll(players);
+        });
     }
 
     private static void loadSquads() throws IOException{
         List<SerieATeam> serieATeams = new ArrayList<>();
-        InputStream is = context.getResources().openRawResource(R.raw.players_temp);
+        InputStream is = context.getResources().openRawResource(R.raw.squads);
         InputStreamReader csvStreamReader = new InputStreamReader(is);
 
         CSVReader reader = new CSVReader(csvStreamReader);
@@ -137,6 +136,8 @@ public abstract class AppDatabase extends RoomDatabase {
             SerieATeam newSerieATeam = new SerieATeam(name, rating);
             serieATeams.add(newSerieATeam);
         }
-        INSTANCE.serieATeamDao().insertAll(serieATeams);
+        databaseWriteExecutor.execute( () -> {
+            INSTANCE.serieATeamDao().insertAll(serieATeams);
+        });
     }
 }

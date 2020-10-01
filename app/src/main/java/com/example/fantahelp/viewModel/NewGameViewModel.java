@@ -2,7 +2,6 @@ package com.example.fantahelp.viewModel;
 
 import android.app.Application;
 import androidx.lifecycle.AndroidViewModel;
-import com.example.fantahelp.model.AppDatabase;
 import com.example.fantahelp.model.DataRepository;
 import com.example.fantahelp.model.entities.Game;
 import com.example.fantahelp.model.entities.User;
@@ -33,20 +32,24 @@ public class NewGameViewModel extends AndroidViewModel {
         this.gameName = name;
     }
 
-    public boolean createGame() {
-        if(!gameName.isEmpty() && usernames.size() > 3 && usernames.size() < 11) {
-            List<Integer> userIds = new ArrayList<>();
-            List<User> newUsers = new ArrayList<>();
-            for(String username: usernames){
-                User newUser = new User(username);
-                userIds.add(newUser.id);
-            }
-            Game newGame = new Game(gameName, userIds);
-            if(mRepository.createGame(newGame)){
-                mRepository.addNewUsers(newUsers);
-                return true;
+    public int createGame() {
+        int gameId = -1;
+        if(gameName != null) {
+            if (!gameName.isEmpty() && usernames.size() > 3 && usernames.size() < 11) {
+                List<Integer> userIds = new ArrayList<>();
+                List<User> newUsers = new ArrayList<>();
+                for (String username : usernames) {
+                    //TODO:reset of the added users "transactions"
+                    User newUser = new User(username);
+                    int id = mRepository.addNewUser(newUser);
+                    newUser.setId(id);
+                    newUsers.add(newUser);
+                    userIds.add(newUser.id);
+                }
+                Game newGame = new Game(gameName, userIds);
+                gameId = mRepository.createGame(newGame);
             }
         }
-        return false;
+        return gameId;
     }
 }
