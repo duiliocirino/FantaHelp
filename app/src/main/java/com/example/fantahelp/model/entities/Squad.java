@@ -5,13 +5,13 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity
-public class SerieATeam {
+public class Squad {
     @PrimaryKey
     @NonNull
     public String name;
     public int rating;
 
-    public SerieATeam(String name, int rating) {
+    public Squad(String name, int rating) {
         this.name = name;
         this.rating = rating;
     }

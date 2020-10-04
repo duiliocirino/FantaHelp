@@ -10,4 +10,17 @@
     <string name="next">avanti</string>
     <string name="back">indietro</string>
     <string name="gameName">nome lega</string>
+    <string name="title_settings">Impostazioni</string>
+    <string name="d">D</string>
+    <string name="m">C</string>
+    <string name="a">A</string>
+    <string name="k">P</string>
+    <string name="assign">assegna</string>
+    <string name="pass">passa</string>
+    <string name="bet">punta</string>
+    <string name="current_user_s_bet">deve puntare</string>
+    <string name="decision">scelta</string>
+    <string name="player">giocatore</string>
+    <string name="display_choice">É il turno di</string>
+    <string name="negativeNum">Non puoi fare questa azione</string>
 </resources>

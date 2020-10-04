@@ -62,6 +62,20 @@ public class DataRepository {
         return game;
     }
 
+    private int futureIntHandler(Callable<Integer> insertCallable){
+        int value = -1;
+
+        Future<Integer> future = AppDatabase.databaseWriteExecutor.submit(insertCallable);
+        try {
+            value = future.get();
+        } catch (InterruptedException e1) {
+            e1.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return value;
+    }
+
     public LiveData<List<User>> getAllUsers(int gameId) {
         Callable<Game> insertCallable = () -> db.gameDao().getGameaById(gameId);
         if(allUsers == null)
@@ -110,5 +124,10 @@ public class DataRepository {
 
     public Game getGameaById(int gameId) {
         return db.gameDao().getGameaById(gameId);
+    }
+
+    public int getSquadRating(String name) {
+        Callable<Integer> insertCallable = () -> db.serieATeamDao().getRatingByName(name);
+        return futureIntHandler(insertCallable);
     }
 }

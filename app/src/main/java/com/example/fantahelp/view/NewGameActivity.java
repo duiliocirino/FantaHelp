@@ -7,7 +7,6 @@ import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 import com.example.fantahelp.R;
 import com.example.fantahelp.viewModel.NewGameViewModel;
 
@@ -24,7 +23,7 @@ public class NewGameActivity extends AppCompatActivity {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         setContentView(R.layout.activity_new_game);
 
-        newGameViewModel = ViewModelProviders.of(this).get(NewGameViewModel.class);
+        newGameViewModel = new ViewModelProvider(this).get(NewGameViewModel.class);
 
         configureInput();
     }

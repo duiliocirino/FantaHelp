@@ -1,7 +1,6 @@
 package com.example.fantahelp.model;
 
 import android.content.Context;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
@@ -10,10 +9,9 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import com.example.fantahelp.R;
 import com.example.fantahelp.model.daos.GameDao;
 import com.example.fantahelp.model.daos.PlayerDao;
-import com.example.fantahelp.model.daos.SerieATeamDao;
+import com.example.fantahelp.model.daos.SquadDao;
 import com.example.fantahelp.model.daos.UserDao;
 import com.example.fantahelp.model.entities.*;
-import com.example.fantahelp.view.MainActivity;
 import com.opencsv.CSVReader;
 
 import java.io.IOException;
@@ -24,7 +22,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {User.class, Player.class, Game.class, Team.class, SerieATeam.class}, version = 1)
+@Database(entities = {User.class, Player.class, Game.class, Team.class, Squad.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static Context context;
@@ -33,7 +31,7 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract UserDao userDao();
     public abstract PlayerDao playerDao();
     public abstract GameDao gameDao();
-    public abstract SerieATeamDao serieATeamDao();
+    public abstract SquadDao serieATeamDao();
 
     private static final int NUMBER_OF_THREADS = 4;
     static final ExecutorService databaseWriteExecutor =
@@ -118,7 +116,7 @@ public abstract class AppDatabase extends RoomDatabase {
     }
 
     private static void loadSquads() throws IOException{
-        List<SerieATeam> serieATeams = new ArrayList<>();
+        List<Squad> squads = new ArrayList<>();
         InputStream is = context.getResources().openRawResource(R.raw.squads);
         InputStreamReader csvStreamReader = new InputStreamReader(is);
 
@@ -133,11 +131,11 @@ public abstract class AppDatabase extends RoomDatabase {
             name = record[0];
             rating = Integer.parseInt(record[1]);
 
-            SerieATeam newSerieATeam = new SerieATeam(name, rating);
-            serieATeams.add(newSerieATeam);
+            Squad newSquad = new Squad(name, rating);
+            squads.add(newSquad);
         }
         databaseWriteExecutor.execute( () -> {
-            INSTANCE.serieATeamDao().insertAll(serieATeams);
+            INSTANCE.serieATeamDao().insertAll(squads);
         });
     }
 }

@@ -3,14 +3,14 @@
                 android:layout_width="fill_parent"
                 android:layout_height="?android:attr/listPreferredItemHeight"
                 android:padding="6dip" android:id="@+id/gamesBoxLine">
-
-
     <TextView
             style="@style/ClickableStyle"
             android:text="Game"
             android:gravity="center"
+            android:layout_marginBottom="6dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/gameInBox"/>
+            android:layout_height="wrap_content" android:id="@+id/gameInBox"
+            android:layout_alignParentBottom="true"/>
     <Button
             android:text="LOAD"
             android:layout_width="wrap_content"

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="?android:attr/listPreferredItemHeight"
+                android:padding="6dip" android:id="@+id/gamesBoxLine">
+    <TextView
+            style="@style/ClickableStyle"
+            android:text="PlayerName"
+            android:gravity="center"
+            android:layout_marginBottom="6dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/playerNameSugg"
+            android:layout_alignParentStart="true"/>
+    <TextView
+            style="@style/ClickableStyle"
+            android:text="SquadName"
+            android:gravity="center"
+            android:layout_marginBottom="6dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/squadSugg"
+            android:layout_toEndOf="@id/playerNameSugg"/>
+    <TextView
+            style="@style/ClickableStyle"
+            android:text="5"
+            android:gravity="center"
+            android:layout_marginBottom="6dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/myVoteSugg"
+            android:layout_toStartOf="@id/valueSugg"/>
+    <TextView
+            style="@style/ClickableStyle"
+            android:text="0,5"
+            android:gravity="center"
+            android:layout_marginBottom="6dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/regularitySugg"
+            android:layout_toStartOf="@id/myVoteSugg"/>
+    <TextView
+        style="@style/ClickableStyle"
+        android:text="10"
+        android:gravity="center"
+        android:layout_marginBottom="6dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" android:id="@+id/valueSugg"
+        android:layout_alignParentEnd="true"/>
+</RelativeLayout>

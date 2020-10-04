@@ -69,10 +69,9 @@ public class LoadRVAdapter extends RecyclerView.Adapter<LoadRVAdapter.ViewHolder
         // create a new view
         LayoutInflater inflater = LayoutInflater.from(
                 parent.getContext());
-        View v = inflater.inflate(R.layout.row_layout, parent, false);
+        View v = inflater.inflate(R.layout.load_row_layout, parent, false);
         // set the view's size, margins, paddings and layout parameters
-        ViewHolder vh = new ViewHolder(v);
-        return vh;
+        return new ViewHolder(v);
     }
 
     // Replace the contents of a view (invoked by the layout manager)

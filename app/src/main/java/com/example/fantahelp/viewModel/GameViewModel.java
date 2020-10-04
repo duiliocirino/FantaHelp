@@ -9,10 +9,13 @@ import com.example.fantahelp.model.entities.Player;
 import com.example.fantahelp.model.entities.User;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class GameViewModel extends AndroidViewModel {
     // TODO: Implement the ViewModel
     private DataRepository dataRepository;
+
+    private String selectedRole = "P";
 
     private LiveData<Game> game;
     private LiveData<List<Player>> allPlayers;
@@ -26,6 +29,14 @@ public class GameViewModel extends AndroidViewModel {
         allUsers = dataRepository.getAllUsers(gameId);
     }
 
+    public String getSelectedRole() {
+        return selectedRole;
+    }
+
+    public void setSelectedRole(String selectedRole) {
+        this.selectedRole = selectedRole;
+    }
+
     public LiveData<List<Player>> getAllPlayers() {
         return allPlayers;
     }
@@ -34,5 +45,10 @@ public class GameViewModel extends AndroidViewModel {
     }
     public LiveData<Game> getGame() {
         return game;
+    }
+
+
+    public Player getPlayerByName(String playerName) {
+        return allPlayers.getValue().stream().filter(x -> x.name.equals(playerName)).collect(Collectors.toList()).get(0);
     }
 }
