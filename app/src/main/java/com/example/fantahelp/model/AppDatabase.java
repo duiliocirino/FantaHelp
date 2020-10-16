@@ -7,10 +7,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 import com.example.fantahelp.R;
-import com.example.fantahelp.model.daos.GameDao;
-import com.example.fantahelp.model.daos.PlayerDao;
-import com.example.fantahelp.model.daos.SquadDao;
-import com.example.fantahelp.model.daos.UserDao;
+import com.example.fantahelp.model.daos.*;
 import com.example.fantahelp.model.entities.*;
 import com.opencsv.CSVReader;
 
@@ -31,6 +28,7 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract UserDao userDao();
     public abstract PlayerDao playerDao();
     public abstract GameDao gameDao();
+    public abstract TeamDao teamDao();
     public abstract SquadDao serieATeamDao();
 
     private static final int NUMBER_OF_THREADS = 4;
@@ -62,7 +60,7 @@ public abstract class AppDatabase extends RoomDatabase {
 
     private static void loadPlayers() throws IOException {
         List<Player> players = new ArrayList<>();
-        InputStream is = context.getResources().openRawResource(R.raw.players_temp);
+        InputStream is = context.getResources().openRawResource(R.raw.players20_21final);
         InputStreamReader csvStreamReader = new InputStreamReader(is);
 
         CSVReader reader = new CSVReader(csvStreamReader);

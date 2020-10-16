@@ -4,6 +4,7 @@ import android.app.Application;
 import androidx.lifecycle.AndroidViewModel;
 import com.example.fantahelp.model.DataRepository;
 import com.example.fantahelp.model.entities.Game;
+import com.example.fantahelp.model.entities.Team;
 import com.example.fantahelp.model.entities.User;
 
 import java.util.ArrayList;
@@ -38,13 +39,19 @@ public class NewGameViewModel extends AndroidViewModel {
             if (!gameName.isEmpty() && usernames.size() > 3 && usernames.size() < 11) {
                 List<Integer> userIds = new ArrayList<>();
                 List<User> newUsers = new ArrayList<>();
+                List<Team> newTeams = new ArrayList<>();
                 for (String username : usernames) {
-                    //TODO:reset of the added users "transactions"
                     User newUser = new User(username);
                     int id = mRepository.addNewUser(newUser);
                     newUser.setId(id);
-                    newUsers.add(newUser);
+                    Team newTeam = new Team(id);
+                    int teamId = mRepository.addNewTeam(newTeam);
+                    newTeam.setId(teamId);
+                    newUser.setTeamId(teamId);
+                    mRepository.updateUser(newUser);
                     userIds.add(newUser.id);
+                    newTeams.add(newTeam);
+                    newUsers.add(newUser);
                 }
                 Game newGame = new Game(gameName, userIds);
                 gameId = mRepository.createGame(newGame);

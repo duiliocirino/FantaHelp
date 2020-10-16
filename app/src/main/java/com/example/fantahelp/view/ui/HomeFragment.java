@@ -1,16 +1,32 @@
 package com.example.fantahelp.view.ui;
 
+import android.graphics.Color;
 import android.os.Bundle;
-import android.widget.Spinner;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.widget.*;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import com.example.fantahelp.R;
+import com.example.fantahelp.model.entities.Player;
+import com.example.fantahelp.model.entities.Team;
 import com.example.fantahelp.model.entities.User;
+import com.example.fantahelp.model.utils.CreditsCalculator;
+import com.example.fantahelp.model.utils.DecisionMaker;
+import com.example.fantahelp.model.utils.GameRVAdapter;
+import com.example.fantahelp.model.utils.ValueCalculator;
+import com.example.fantahelp.viewModel.GameViewModel;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,6 +43,8 @@ public class HomeFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private GameViewModel gameViewModel;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -58,12 +76,263 @@ public class HomeFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
+
+        gameViewModel = new ViewModelProvider(getActivity()).get(GameViewModel.class);
+    }
+
+
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        setButtons();
+    }
+
+    private void setButtons(){
+        AutoCompleteTextView searchBar = getActivity().findViewById(R.id.playerSearchBar);
+        EditText editText = getActivity().findViewById(R.id.editTextBetNumber);
+        Spinner spinner = getActivity().findViewById(R.id.spinner);
+
+        // MATH BUTTONS
+
+
+        Button button = getActivity().findViewById(R.id.buttonPlus5);
+        button.setOnClickListener((e) -> {
+            int bet = Integer.parseInt(editText.getText().toString());
+            editText.setText(String.valueOf(bet + 5));
+        });
+        button = getActivity().findViewById(R.id.buttonPlus1);
+        button.setOnClickListener((e) -> {
+            int bet = Integer.parseInt(editText.getText().toString());
+            editText.setText(String.valueOf(bet + 1));
+        });
+        button = getActivity().findViewById(R.id.buttonMinus1);
+        button.setOnClickListener((e) -> {
+            int bet = Integer.parseInt(editText.getText().toString());
+            if(bet - 1 > 0) {
+                editText.setText(String.valueOf(bet - 1));
+            }
+            else {
+                Toast.makeText(getActivity(), R.string.negativeNum, 1).show();
+            }
+        });
+        button = getActivity().findViewById(R.id.buttonMinus5);
+        button.setOnClickListener((e) -> {
+            int bet = Integer.parseInt(editText.getText().toString());
+            if(bet - 5 > 0) {
+                editText.setText(String.valueOf(bet - 5));
+            }
+            else {
+                Toast.makeText(getActivity(), R.string.negativeNum, 1).show();
+            }
+        });
+
+
+        //UP ROLE BUTTONS
+
+
+        button = getActivity().findViewById(R.id.keeperButton);
+        Button finalButton = button;
+        button.setOnClickListener((e) -> {
+            TextView textView = getActivity().findViewById(R.id.roleTextView);
+
+            textView.setText(finalButton.getText());
+            gameViewModel.setSelectedRole(finalButton.getText().toString());
+
+            RecyclerView recyclerView = getActivity().findViewById(R.id.suggestionBox);
+            GameRVAdapter gameRVAdapter = (GameRVAdapter) recyclerView.getAdapter();
+            gameRVAdapter.setVisibility(gameViewModel.getAllPlayers().getValue().stream()
+                    .map(x -> x.role.equals("P") && x.ownerId == -1)
+                    .collect(Collectors.toList()));
+
+            updateCreditsViews(gameViewModel.getAllTeams().getValue());
+        });
+        button = getActivity().findViewById(R.id.defenderButton);
+        Button finalButton1 = button;
+        button.setOnClickListener((e) -> {
+            TextView textView = getActivity().findViewById(R.id.roleTextView);
+            textView.setText(finalButton1.getText());
+            gameViewModel.setSelectedRole(finalButton1.getText().toString());
+
+            RecyclerView recyclerView = getActivity().findViewById(R.id.suggestionBox);
+            GameRVAdapter gameRVAdapter = (GameRVAdapter) recyclerView.getAdapter();
+            gameRVAdapter.setVisibility(gameViewModel.getAllPlayers().getValue().stream()
+                    .map(x -> x.role.equals("D") && x.ownerId == -1)
+                    .collect(Collectors.toList()));
+
+            updateCreditsViews(gameViewModel.getAllTeams().getValue());
+        });
+        button = getActivity().findViewById(R.id.midfielderButton);
+        Button finalButton2 = button;
+        button.setOnClickListener((e) -> {
+            TextView textView = getActivity().findViewById(R.id.roleTextView);
+            textView.setText(finalButton2.getText());
+            gameViewModel.setSelectedRole(finalButton2.getText().toString());
+
+            RecyclerView recyclerView = getActivity().findViewById(R.id.suggestionBox);
+            GameRVAdapter gameRVAdapter = (GameRVAdapter) recyclerView.getAdapter();
+            gameRVAdapter.setVisibility(gameViewModel.getAllPlayers().getValue().stream()
+                    .map(x -> x.role.equals("C") && x.ownerId == -1)
+                    .collect(Collectors.toList()));
+
+            updateCreditsViews(gameViewModel.getAllTeams().getValue());
+        });
+        button = getActivity().findViewById(R.id.attackerButton);
+        Button finalButton3 = button;
+        button.setOnClickListener((e) -> {
+            TextView textView = getActivity().findViewById(R.id.roleTextView);
+            textView.setText(finalButton3.getText());
+            gameViewModel.setSelectedRole(finalButton3.getText().toString());
+
+            RecyclerView recyclerView = getActivity().findViewById(R.id.suggestionBox);
+            GameRVAdapter gameRVAdapter = (GameRVAdapter) recyclerView.getAdapter();
+            gameRVAdapter.setVisibility(gameViewModel.getAllPlayers().getValue().stream()
+                    .map(x -> x.role.equals("A") && x.ownerId == -1)
+                    .collect(Collectors.toList()));
+
+            updateCreditsViews(gameViewModel.getAllTeams().getValue());
+        });
+
+
+        //AUCTION BUTTONS
+
+        button = getActivity().findViewById(R.id.assignButton);
+        button.setOnClickListener((e) -> {
+            String playerName = searchBar.getText().toString();
+            int bet = Integer.parseInt(editText.getText().toString());
+            if(playerName.isEmpty()) return;
+            if(gameViewModel.assignPlayer(spinner.getSelectedItem().toString(), playerName, bet)){
+                updateCreditsViews(gameViewModel.getAllTeams().getValue());
+                Toast.makeText(getActivity(), "Player correctly assigned", 1).show();
+            } else Toast.makeText(getActivity(), "You can't assign this player to this user", 1).show();
+        });
+
+        searchBar.setOnItemClickListener((parent, view, position, id) -> decisionViewsHandler(searchBar));
+
+        EditText editTextNumber = getActivity().findViewById(R.id.editTextBetNumber);
+        editTextNumber.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                decisionViewsHandler(searchBar);
+            }
+        });
+        editTextNumber.setOnEditorActionListener((v, actionId, event) -> {
+            decisionViewsHandler(searchBar);
+            return true;
+        });
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        //Spinner of users
+
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), R.layout.spinner_item);
+
+        //SearchBar
+
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity().getApplicationContext(), android.R.layout.simple_list_item_1);
+
+        final GameRVAdapter[] mAdapter = {new GameRVAdapter(getContext())};
+
+        gameViewModel.getAllPlayers().observe(getViewLifecycleOwner(), players -> {
+            players.sort( (a, b) -> ValueCalculator.getValue(b, getActivity().getApplication()) -
+                    ValueCalculator.getValue(b, getActivity().getApplication()));
+
+            RecyclerView recyclerView = getActivity().findViewById(R.id.suggestionBox);
+            recyclerView.setHasFixedSize(true);
+
+            AutoCompleteTextView searchBar = getActivity().findViewById(R.id.playerSearchBar);
+
+            arrayAdapter.clear();
+            arrayAdapter.addAll(players.stream().filter(x -> x.ownerId == -1).map(x -> x.name).toArray(String[]::new));
+            searchBar.setAdapter(arrayAdapter);
+
+            if(recyclerView.getAdapter() == null) {
+                recyclerView.setAdapter(mAdapter[0]);
+                recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            }
+
+            mAdapter[0] = new GameRVAdapter(getContext());
+            mAdapter[0].setNames(players.stream().map(x -> x.name).collect(Collectors.toList()));
+            mAdapter[0].setSquadNames(players.stream().map(x -> x.squad).collect(Collectors.toList()));
+            mAdapter[0].setRegular(players.stream().map(x -> x.regularness).collect(Collectors.toList()));
+            mAdapter[0].setMyVote(players.stream().map(x -> x.myRating).collect(Collectors.toList()));
+            mAdapter[0].setValues(ValueCalculator.getValues(getActivity().getApplication(), players, gameViewModel.getSelectedRole()));
+            mAdapter[0].setVisibility(players.stream().map(x -> x.role.equals(gameViewModel.getSelectedRole()) && x.ownerId == -1).collect(Collectors.toList()));
+            recyclerView.setAdapter(mAdapter[0]);
+        });
+        gameViewModel.getGame().observe(getViewLifecycleOwner(), game -> {
+
+        });
+        gameViewModel.getAllUsers().observe(getViewLifecycleOwner(), users -> {
+            Spinner spinner = getActivity().findViewById(R.id.spinner);
+            adapter.addAll(users.stream()
+                    .map(x -> x.name)
+                    .toArray(String[]::new));
+            spinner.setAdapter(adapter);
+            gameViewModel.retrieveAllTeams(users.stream().map(x -> x.id).collect(Collectors.toList()));
+            if(gameViewModel.getMyUserId() == -1) {
+                gameViewModel.setMyUserId(users.get(0).id);
+                gameViewModel.setMyTeamId(users.get(0).team_id);
+            }
+            gameViewModel.getAllTeams().observe(getViewLifecycleOwner(), teams -> {
+                if(teams != null) {
+                    updateCreditsViews(teams);
+                    if(teams.stream().anyMatch(team -> team.players_id.size() == 0)){
+                        gameViewModel.updatePlayers(teams);
+                    }
+                }
+            });
+        });
+
         return inflater.inflate(R.layout.fragment_home, container, false);
+    }
+
+    private void updateCreditsViews(List<Team> teams) {
+        TextView totalCredits = getActivity().findViewById(R.id.totalCreditsNumber);
+        TextView partialCredits = getActivity().findViewById(R.id.partialCreditsNum);
+
+        totalCredits.setText(String.valueOf(gameViewModel.getMyTeam(teams).credits));
+        CreditsCalculator.update(gameViewModel.getMyTeam(teams));
+        partialCredits.setText(String.valueOf(CreditsCalculator.getPartialTotal(gameViewModel.getSelectedRole()))
+                + "/" + String.valueOf(CreditsCalculator.getPartialTotal(gameViewModel.getSelectedRole())));
+    }
+
+    private void decisionViewsHandler(AutoCompleteTextView searchBar) {
+        if(searchBar.getText().toString().equals("")) return;
+        String playerName = searchBar.getText().toString();
+        Player player = gameViewModel.getPlayerByName(playerName);
+        if(player == null) return;
+        EditText editTextNumber = getActivity().findViewById(R.id.editTextBetNumber);
+        TextView decisionView = getActivity().findViewById(R.id.decisionView);
+        TextView myVoteView = getActivity().findViewById(R.id.myVoteView);
+        TextView valueView = getActivity().findViewById(R.id.valueView);
+        int suggestedValue = ValueCalculator.getValue(player, getActivity().getApplication());
+        String decision = "";
+        try {
+            decision = DecisionMaker.makeDecision(player, suggestedValue,
+                    Integer.parseInt(editTextNumber.getText().toString()));
+        } catch (NumberFormatException e){
+            return;
+        }
+        decisionView.setText(decision);
+        if(decision.equals("PASS")) decisionView.setTextColor(Color.RED);
+        else decisionView.setTextColor(Color.GREEN);
+        myVoteView.setText(String.valueOf(player.myRating));
+        valueView.setText(String.valueOf(suggestedValue));
     }
 }

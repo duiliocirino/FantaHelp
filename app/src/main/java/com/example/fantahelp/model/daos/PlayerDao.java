@@ -1,10 +1,7 @@
 package com.example.fantahelp.model.daos;
 
 import androidx.lifecycle.LiveData;
-import androidx.room.Dao;
-import androidx.room.Insert;
-import androidx.room.OnConflictStrategy;
-import androidx.room.Query;
+import androidx.room.*;
 import com.example.fantahelp.model.entities.Player;
 
 import java.util.List;
@@ -14,6 +11,12 @@ public interface PlayerDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(List<Player> players);
 
+    @Update
+    void updatePlayer(Player player);
+
     @Query("SELECT * FROM Player")
     LiveData<List<Player>> getAllPlayers();
+
+    @Update
+    void updatePlayers(List<Player> playersToUpdate);
 }

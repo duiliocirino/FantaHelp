@@ -23,8 +23,10 @@ public class IntegerConverter {
     @TypeConverter
     public String writingStringFromList(List<Integer> list) {
         String genreIds = "";
-        for (int i : list) {
-            genreIds += "," + i;
+        if(list != null) {
+            for (int i : list) {
+                genreIds += "," + i;
+            }
         }
         return genreIds;
     }

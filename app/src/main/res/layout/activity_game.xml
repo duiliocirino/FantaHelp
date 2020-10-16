@@ -8,17 +8,18 @@
         android:background="@drawable/background2"
         tools:context=".view.GameActivity">
 
+    <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="810dp"
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:id="@+id/frameLayout">
+
+    </FrameLayout>
     <com.google.android.material.bottomnavigation.BottomNavigationView
             android:layout_width="0dp"
             android:layout_height="50dp"
             app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent"
             app:menu="@menu/bottom_navigation_menu"
             app:layout_constraintEnd_toEndOf="parent" android:id="@+id/bottomNavigationView"/>
-    <androidx.fragment.app.FragmentContainerView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:name="com.example.fantahelp.view.ui.HomeFragment"
-            android:id="@+id/fragment"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

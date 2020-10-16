@@ -2,13 +2,12 @@ package com.example.fantahelp.model.entities;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-import com.example.fantahelp.model.enums.Rate;
-import com.example.fantahelp.model.enums.Role;
 
 @Entity
 public class Player {
     @PrimaryKey
     public int id;
+    public int ownerId = -1;
     public String role;
     public String name;
     public String squad;

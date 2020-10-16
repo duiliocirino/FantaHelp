@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:title="@string/title_home"
-          android:id="@+id/bottomNavigationClockMenuId"
+          android:id="@+id/bottomNavigationHomeMenuId"
           android:icon="@drawable/rect"/>
     <item android:title="@string/title_dashboard"
-          android:id="@+id/bottomNavigationAlarmMenuId"
+          android:id="@+id/bottomNavigationDashboardMenuId"
           android:icon="@drawable/rect"/>
     <item android:title="@string/title_settings"
-          android:id="@+id/bottomNavigationTimerMenuId"
+          android:id="@+id/bottomNavigationSettingsMenuId"
           android:icon="@drawable/rect"/>
 </menu>

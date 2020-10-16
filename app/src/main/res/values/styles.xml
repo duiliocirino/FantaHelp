@@ -21,6 +21,13 @@
         <item name="android:background">@drawable/rect</item>
         <item name="android:gravity">center</item>
     </style>
+    <style name="DashboardPlayers">
+        <item name="android:textColor">@android:color/background_light</item>
+        <item name="android:textSize">15sp</item>
+        <item name="fontFamily">sans-serif-smallcaps</item>
+        <item name="android:background">@drawable/rect</item>
+        <item name="android:gravity">center</item>
+    </style>
     <style name="UsernameBoxStyle">
         <item name="android:textColor">@android:color/background_light</item>
         <item name="android:textSize">20sp</item>

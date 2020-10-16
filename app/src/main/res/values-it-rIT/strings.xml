@@ -21,6 +21,8 @@
     <string name="current_user_s_bet">deve puntare</string>
     <string name="decision">scelta</string>
     <string name="player">giocatore</string>
-    <string name="display_choice">É il turno di</string>
+    <string name="display_choice">È il turno di</string>
     <string name="negativeNum">Non puoi fare questa azione</string>
+    <string name="total_credits">Crediti totali</string>
+    <string name="remaining_credits_for_role">Crediti parziali</string>
 </resources>

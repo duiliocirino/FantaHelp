@@ -31,4 +31,10 @@
     <string name="k">K</string>
     <string name="_1" translatable="false">1</string>
     <string name="negativeNum">You can\'t perform this action</string>
+    <string name="total_credits">Total credits</string>
+    <string name="remaining_credits_for_role">Remaining credits for role</string>
+    <string name="_0_0" translatable="false">0/0</string>
+    <string name="r" translatable="false">R</string>
+    <string name="playername" translatable="false">PLAYERNAME</string>
+    <string name="squadname" translatable="false">SquadName</string>
 </resources>

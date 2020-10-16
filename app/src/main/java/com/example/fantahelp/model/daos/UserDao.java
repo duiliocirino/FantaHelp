@@ -18,6 +18,9 @@ public interface UserDao {
             "name LIKE :last LIMIT 1")
     User findByName(String first, String last);
 
+    @Update
+    void updateUser(User user);
+
     @Insert
     void insertAll(List<User> users);
 

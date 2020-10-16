@@ -4,9 +4,11 @@ import android.app.Application;
 import android.content.Context;
 import com.example.fantahelp.model.DataRepository;
 import com.example.fantahelp.model.entities.Player;
+import com.example.fantahelp.model.entities.Team;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ValueCalculator {
 
@@ -19,8 +21,39 @@ public class ValueCalculator {
     }
 
     public static int getValue(Player player, Application application){
+        Team myTeam = DataRepository.getRepository(application).getMyTeam();
+        if(myTeam == null) return (int) (myVoteMultiplier(player.myRating) * squadMultiplier(player.squad, application) *
+                regularnessMultiplier(player.regularness) * roleMultiplier(player.role) * player.price ) + 1;
         return (int) (myVoteMultiplier(player.myRating) * squadMultiplier(player.squad, application) *
-                regularnessMultiplier(player.regularness) * roleMultiplier(player.role) * player.price) + 1;
+                regularnessMultiplier(player.regularness) * roleMultiplier(player.role) *
+                sameRoleSameSquadMultiplier(player, myTeam, application) *
+                mateMultiplier(player.mate, myTeam, application) * player.price ) + 1;
+    }
+
+    private static float sameRoleSameSquadMultiplier(Player player, Team team, Application application){
+        List<Player> teamPlayers = DataRepository.getRepository(application).getPlayersByTeam(team);
+        if(teamPlayers != null) {
+            if (teamPlayers.stream()
+                    .filter(x -> x.role.equals(player.role) && x.squad.equals(player.squad))
+                    .collect(Collectors.toList())
+                    .size() > 0) {
+                if(player.role.equals("P")) return 1.5f;
+                return 0.8f;
+            }
+        }
+        return 1;
+    }
+
+    private static float mateMultiplier(String mate, Team team, Application application){
+        List<Player> teamPlayers = DataRepository.getRepository(application).getPlayersByTeam(team);
+        if(teamPlayers != null && !mate.isEmpty()){
+            if(teamPlayers.stream()
+                    .filter(x -> x.name.equals(mate))
+                    .collect(Collectors.toList())
+                    .size() == 1)
+                return 2;
+        }
+        return 1;
     }
 
     private static float roleMultiplier(String role) {

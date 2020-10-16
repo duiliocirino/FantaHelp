@@ -48,38 +48,31 @@ public class GameRVAdapter extends RecyclerView.Adapter<GameRVAdapter.ViewHolder
     }
 
     public void setNames(List<String> names) {
-        if(names != null) {
-            this.names.addAll(names);
-            notifyDataSetChanged();
-        }
+        this.names.addAll(names);
+        notifyDataSetChanged();
     }
 
     public void setSquadNames(List<String> squadNames) {
-        if(squadNames != null) {
-            this.squadNames.addAll(squadNames);
-            notifyDataSetChanged();
-        }
+        this.squadNames.addAll(squadNames);
+        notifyDataSetChanged();
     }
 
     public void setRegular(List<Integer> regularities) {
-        if(myVotes != null){
-            this.regularities.addAll(regularities);
-            notifyDataSetChanged();
-        }
+        this.regularities.addAll(regularities);
+        notifyDataSetChanged();
+
     }
 
     public void setMyVote(List<Integer> myVotes) {
-        if(myVotes != null){
-            this.myVotes.addAll(myVotes);
-            notifyDataSetChanged();
-        }
+        this.myVotes.addAll(myVotes);
+        notifyDataSetChanged();
+
     }
 
     public void setValues(List<Integer> values) {
-        if(values != null) {
-            this.values.addAll(values);
-            notifyDataSetChanged();
-        }
+        this.values.addAll(values);
+        notifyDataSetChanged();
+
     }
 
     public void setVisibility(List<Boolean> visibility){
@@ -125,6 +118,7 @@ public class GameRVAdapter extends RecyclerView.Adapter<GameRVAdapter.ViewHolder
         holder.regularityView.setText(String.valueOf(regularity));
         holder.myVoteView.setText(String.valueOf(myVote));
         holder.valueView.setText(String.valueOf(value));
+        if(visibility.size() <= position) return;
         if(visibility.get(position) == false) {
             holder.layout.setVisibility(View.GONE);
             holder.layout.setLayoutParams(new RecyclerView.LayoutParams(0 ,0));

@@ -1,16 +1,21 @@
 package com.example.fantahelp.model;
 
 import android.app.Application;
+import android.telecom.Call;
 import androidx.lifecycle.LiveData;
 import com.example.fantahelp.model.entities.Game;
 import com.example.fantahelp.model.entities.Player;
+import com.example.fantahelp.model.entities.Team;
 import com.example.fantahelp.model.entities.User;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import java.util.stream.Collectors;
 
 public class DataRepository {
     private static DataRepository sInstance;
@@ -20,6 +25,7 @@ public class DataRepository {
     private LiveData<List<Player>> allPlayers;
     private LiveData<List<User>> allUsers;
     private LiveData<List<Game>> allGames;
+    private LiveData<List<Team>> allTeams;
 
 
     DataRepository(Application application) throws IOException {
@@ -89,6 +95,12 @@ public class DataRepository {
         return allGames;
     }
 
+    public LiveData<List<Team>> getAllTeams(List<Integer> ids) {
+        if(allTeams == null)
+            allTeams = db.teamDao().loadAllByIds(ids);
+        return allTeams;
+    }
+
     public LiveData<Game> getGameById(int gameId) {
         return db.gameDao().getGameById(gameId);
     }
@@ -112,6 +124,10 @@ public class DataRepository {
         return (int) rowId;
     }
 
+    public void updateUser(User newUser) {
+        AppDatabase.databaseWriteExecutor.execute(() -> db.userDao().updateUser(newUser));
+    }
+
     public int createGame(Game newGame) {
         Callable<Long> insertCallable = () -> db.gameDao().insertGame(newGame);
         return futureHandler(insertCallable);
@@ -122,12 +138,84 @@ public class DataRepository {
         return futureHandler(insertCallable);
     }
 
-    public Game getGameaById(int gameId) {
-        return db.gameDao().getGameaById(gameId);
+    public int addNewTeam(Team newTeam) {
+        Callable<Long> insertCallable = () -> db.teamDao().insertTeam(newTeam);
+        return futureHandler(insertCallable);
     }
 
     public int getSquadRating(String name) {
         Callable<Integer> insertCallable = () -> db.serieATeamDao().getRatingByName(name);
         return futureIntHandler(insertCallable);
+    }
+
+    public boolean assignPlayer(String userName, String playerName, int bet) {
+        Player player = getPlayerByName(playerName);
+        if(player == null) return false;
+        User user = getUserByName(userName);
+        if(user == null) return false;
+        Team team = getTeamById(user.team_id);
+        if(team == null) return false;
+        if(team.credits - bet < 0) return false;
+        team.credits = team.credits - bet;
+        team.players_id.add(player.id);
+        player.ownerId = user.id;
+        AppDatabase.databaseWriteExecutor.execute(() -> {
+            db.teamDao().updateTeam(team);
+            db.playerDao().updatePlayer(player);
+        });
+        return true;
+    }
+
+    public Player getPlayerByName(String playerName) {
+        try {
+            return allPlayers.getValue().stream().filter(x -> x.name.equals(playerName)).collect(Collectors.toList()).get(0);
+        } catch(IndexOutOfBoundsException e){
+            return null;
+        }
+    }
+
+    public Team getTeamById(int team_id) {
+        try {
+            return allTeams.getValue().stream().filter(x -> x.id == team_id).collect(Collectors.toList()).get(0);
+        } catch(IndexOutOfBoundsException e){
+            return null;
+        }
+    }
+
+    public User getUserByName(String userName) {
+        try {
+            return allUsers.getValue().stream().filter(x -> x.name.equals(userName)).collect(Collectors.toList()).get(0);
+        } catch(IndexOutOfBoundsException e){
+            return null;
+        }
+    }
+
+    public void updatePlayers(List<Team> nonNullTeams) {
+        List<Player> playersToUpdate = new ArrayList<>();
+        for(Team team: nonNullTeams){
+            playersToUpdate.addAll(allPlayers.getValue().stream()
+                    .filter(x -> team.players_id.contains(x.id))
+                    .collect(Collectors.toList()));
+            playersToUpdate.stream().forEach(x -> x.ownerId = team.user_id);
+        }
+        AppDatabase.databaseWriteExecutor.execute(() -> db.playerDao().updatePlayers(playersToUpdate));
+    }
+
+    public List<Player> getPlayersByUserTeam(String username) {
+        User user = getUserByName(username);
+        Team team = getTeamById(user.team_id);
+        return getPlayersByTeam(team);
+    }
+
+    public List<Player> getPlayersByTeam(Team team) {
+        return getAllPlayers().getValue().stream()
+                .filter(x -> team.players_id.contains(x.id))
+                .sorted((a, b) -> b.role.compareTo(a.role))
+                .collect(Collectors.toList());
+    }
+
+    public Team getMyTeam() {
+        if(allTeams.getValue() == null) return null;
+        return allTeams.getValue().get(0);
     }
 }
