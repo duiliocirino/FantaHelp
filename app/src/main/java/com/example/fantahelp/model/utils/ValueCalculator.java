@@ -7,17 +7,42 @@ import com.example.fantahelp.model.entities.Player;
 import com.example.fantahelp.model.entities.Team;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class ValueCalculator {
 
-    public static List<Integer> getValues(Application application, List<Player> players, String role){
-        List<Integer> values = new ArrayList<>();
-        for (Player player: players){
-            values.add(getValue(player, application));
+    /**
+     * String is the role
+     * First Integer is playerId
+     * Second Integer is value calculated
+     */
+    static Map<String, Map<Integer, Integer>> valuesPerRoles = new HashMap<>();
+
+    public static Map<Integer, Integer> getValues(Application application, List<Player> players, String role){
+        Map<Integer, Integer> values;
+        if(!valuesPerRoles.containsKey(role)){
+            values = new HashMap<>();
+            List<Player> playersRole = players.stream().filter(x -> x.role.equals(role)).collect(Collectors.toList());
+            for (Player player: playersRole){
+                values.put(player.id, getValue(player, application));
+            }
+            valuesPerRoles.put(role, values);
         }
+        else
+            values = valuesPerRoles.get(role);
+
         return values;
+    }
+
+    public static void updateValues(Application application, List<Player> players, String role){
+        Map<Integer, Integer> values = new HashMap<>();
+        for (Player player: players.stream().filter(x -> x.role.equals(role)).collect(Collectors.toList())){
+            values.put(player.id, getValue(player, application));
+        }
+        valuesPerRoles.put(role, values);
     }
 
     public static int getValue(Player player, Application application){
@@ -58,7 +83,7 @@ public class ValueCalculator {
 
     private static float roleMultiplier(String role) {
         switch(role){
-            case "A": return 1.2f;
+            case "A": return 1.3f;
             case "P": return 1.3f;
         }
         return 1;

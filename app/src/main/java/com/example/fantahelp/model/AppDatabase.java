@@ -60,7 +60,7 @@ public abstract class AppDatabase extends RoomDatabase {
 
     private static void loadPlayers() throws IOException {
         List<Player> players = new ArrayList<>();
-        InputStream is = context.getResources().openRawResource(R.raw.players20_21final);
+        InputStream is = context.getResources().openRawResource(R.raw.players21_22final);
         InputStreamReader csvStreamReader = new InputStreamReader(is);
 
         CSVReader reader = new CSVReader(csvStreamReader);

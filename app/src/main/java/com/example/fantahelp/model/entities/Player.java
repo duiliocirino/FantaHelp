@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey;
 public class Player {
     @PrimaryKey
     public int id;
-    public int ownerId = -1;
+    public int ownerId;
     public String role;
     public String name;
     public String squad;
@@ -29,6 +29,7 @@ public class Player {
 
     public Player(int id, String role, String name, String squad, int price, int myRating, String mate, int regularness, int pg19_20, float mv19_20, float mf19_20, int assists19_20, int amm19_20, int pg18_19, float mv18_19, float mf18_19, int assists18_19, int amm18_19) {
         this.id = id;
+        this.ownerId = -1;
         this.role = role;
         this.name = name;
         this.squad = squad;

@@ -148,17 +148,7 @@ public class DataRepository {
         return futureIntHandler(insertCallable);
     }
 
-    public boolean assignPlayer(String userName, String playerName, int bet) {
-        Player player = getPlayerByName(playerName);
-        if(player == null) return false;
-        User user = getUserByName(userName);
-        if(user == null) return false;
-        Team team = getTeamById(user.team_id);
-        if(team == null) return false;
-        if(team.credits - bet < 0) return false;
-        team.credits = team.credits - bet;
-        team.players_id.add(player.id);
-        player.ownerId = user.id;
+    public boolean assignPlayer(Team team, Player player) {
         AppDatabase.databaseWriteExecutor.execute(() -> {
             db.teamDao().updateTeam(team);
             db.playerDao().updatePlayer(player);

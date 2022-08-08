@@ -8,8 +8,10 @@ import com.example.fantahelp.model.entities.Game;
 import com.example.fantahelp.model.entities.Player;
 import com.example.fantahelp.model.entities.Team;
 import com.example.fantahelp.model.entities.User;
+import com.example.fantahelp.model.utils.ValueCalculator;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class GameViewModel extends AndroidViewModel {
@@ -47,9 +49,16 @@ public class GameViewModel extends AndroidViewModel {
         game = dataRepository.getGameById(gameId);
         allPlayers = dataRepository.getAllPlayers();
         allUsers = dataRepository.getAllUsers(gameId);
-        if(allUsers.getValue() != null) {
+        // This part is used to load all the previous transactions of players in the game
+        /*if(allUsers.getValue() != null) {
             allTeams = dataRepository.getAllTeams(allUsers.getValue().stream().map(x -> x.team_id).collect(Collectors.toList()));
-        }
+            for (Team team: Objects.requireNonNull(allTeams.getValue())){
+                User user = allUsers.getValue().stream().filter(x -> x.team_id == team.id).findFirst().get();
+                for(int id: team.players_id){
+                    assignPlayer(user.name, getPlayerNameById(id), 0, true);
+                }
+            }
+        }*/
     }
 
     public String getSelectedRole() {
@@ -93,8 +102,25 @@ public class GameViewModel extends AndroidViewModel {
         }
     }
 
-    public boolean assignPlayer(String userName, String playerName, int bet) {
-        if(dataRepository.assignPlayer(userName, playerName, bet)) return true;
+    public String getPlayerNameById(int id){
+        return Objects.requireNonNull(allPlayers.getValue()).stream().filter(x -> x.id == id).findFirst().get().name;
+    }
+
+    public boolean assignPlayer(String userName, String playerName, int bet, boolean startup) {
+        Player player = getPlayerByName(playerName);
+        if(player == null) return false;
+        User user = dataRepository.getUserByName(userName);
+        if(user == null) return false;
+        Team team = dataRepository.getTeamById(user.team_id);
+        if(team == null) return false;
+        if(team.credits - bet < 0) return false;
+        team.credits = team.credits - bet;
+        if(!startup) team.players_id.add(player.id);
+        player.ownerId = user.id;
+
+        ValueCalculator.updateValues(getApplication(), Objects.requireNonNull(allPlayers.getValue()), player.role);
+
+        if(dataRepository.assignPlayer(team, player) && !startup) return true;
         return false;
     }
 
