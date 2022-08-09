@@ -25,4 +25,5 @@
     <string name="negativeNum">Non puoi fare questa azione</string>
     <string name="total_credits">Crediti totali</string>
     <string name="remaining_credits_for_role">Crediti parziali</string>
+    <string name="title_goal">Goal</string>
 </resources>

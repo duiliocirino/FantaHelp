@@ -187,9 +187,8 @@
                 android:text="@string/k"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" android:id="@+id/roleTextView"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginTop="16dp" android:layout_marginStart="380dp"/>
+                android:layout_marginTop="16dp" android:layout_marginEnd="2dp"/>
         <TextView
                 style="@style/HomeStyle"
                 android:text="@string/remaining_credits_for_role"

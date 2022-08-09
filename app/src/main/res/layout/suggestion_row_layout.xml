@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="fill_parent"
-                android:layout_height="?android:attr/listPreferredItemHeight"
-                android:padding="6dip" android:id="@+id/gamesBoxLine">
+                android:layout_height="wrap_content"
+                android:padding="2dip" android:id="@+id/gamesBoxLine">
     <TextView
             style="@style/ClickableStyle"
             android:text="PlayerName"
+            android:textSize="16sp"
             android:gravity="center"
             android:layout_marginBottom="6dp"
             android:layout_width="wrap_content"
@@ -14,6 +15,7 @@
     <TextView
             style="@style/ClickableStyle"
             android:text="SquadName"
+            android:textSize="16sp"
             android:gravity="center"
             android:layout_marginBottom="6dp"
             android:layout_width="wrap_content"
@@ -22,6 +24,7 @@
     <TextView
             style="@style/ClickableStyle"
             android:text="5"
+            android:textSize="16sp"
             android:gravity="center"
             android:layout_marginBottom="6dp"
             android:layout_width="wrap_content"
@@ -30,17 +33,19 @@
     <TextView
             style="@style/ClickableStyle"
             android:text="0,5"
+            android:textSize="16sp"
             android:gravity="center"
             android:layout_marginBottom="6dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/regularitySugg"
             android:layout_toStartOf="@id/myVoteSugg"/>
     <TextView
-        style="@style/ClickableStyle"
-        android:text="10"
-        android:gravity="center"
-        android:layout_marginBottom="6dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" android:id="@+id/valueSugg"
-        android:layout_alignParentEnd="true"/>
+            style="@style/ClickableStyle"
+            android:text="10"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:layout_marginBottom="6dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/valueSugg"
+            android:layout_alignParentEnd="true"/>
 </RelativeLayout>

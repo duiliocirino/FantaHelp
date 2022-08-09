@@ -9,10 +9,11 @@
     <string name="next">next</string>
     <string name="back">back</string>
     <string name="gameName">game name</string>
-    <string name="title_home" translatable="false">Home</string>
+    <string name="title_auction" translatable="false">Auction</string>
     <string name="title_dashboard" translatable="false">Dashboard</string>
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="title_goal">Goal</string>
     <string name="title_settings">Settings</string>
+    <!-- TODO: Remove or change this placeholder text -->
     <string name="display_choice">\'s turn</string>
     <string name="d">D</string>
     <string name="m">M</string>
