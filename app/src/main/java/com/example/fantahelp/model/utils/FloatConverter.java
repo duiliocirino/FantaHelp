@@ -5,16 +5,16 @@ import androidx.room.TypeConverter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class IntegerConverter {
+public class FloatConverter {
     @TypeConverter
-    public List<Integer> gettingListFromString(String genreIds) {
-        List<Integer> list = new ArrayList<>();
+    public List<Float> gettingListFromString(String genreIds) {
+        List<Float> list = new ArrayList<>();
 
         String[] array = genreIds.split(",");
 
         for (String s : array) {
             if (!s.isEmpty()) {
-                list.add(Integer.parseInt(s));
+                list.add(Float.parseFloat(s));
             }
             else
                 list.add(null);
@@ -23,10 +23,10 @@ public class IntegerConverter {
     }
 
     @TypeConverter
-    public String writingStringFromList(List<Integer> list) {
+    public String writingStringFromList(List<Float> list) {
         String genreIds = "";
         if(list != null) {
-            for (Integer i : list) {
+            for (Float i : list) {
                 if(genreIds.isEmpty() && i != null)
                     genreIds += i;
                 else if (i != null)

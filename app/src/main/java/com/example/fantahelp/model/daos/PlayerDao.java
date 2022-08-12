@@ -11,6 +11,9 @@ public interface PlayerDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(List<Player> players);
 
+    @Insert
+    void insert(Player player);
+
     @Update
     void updatePlayer(Player player);
 

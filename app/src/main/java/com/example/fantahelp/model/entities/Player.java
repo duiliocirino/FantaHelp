@@ -2,6 +2,11 @@ package com.example.fantahelp.model.entities;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
+import com.example.fantahelp.model.utils.IntegerConverter;
+import com.example.fantahelp.model.utils.FloatConverter;
+
+import java.util.List;
 
 @Entity
 public class Player {
@@ -15,19 +20,19 @@ public class Player {
     public int myRating;
     public String mate;
     public int regularness;
+    public int fvm;
     // various stats of previous years
-    public int pg19_20;
-    public float mv19_20;
-    public float mf19_20;
-    public int assists19_20;
-    public int amm19_20;
-    public int pg18_19;
-    public float mv18_19;
-    public float mf18_19;
-    public int assists18_19;
-    public int amm18_19;
+    @TypeConverters(IntegerConverter.class)
+    public List<Integer> gamesPlayed;
+    @TypeConverters(FloatConverter.class)
+    public List<Float> avgVote;
+    @TypeConverters(FloatConverter.class)
+    public List<Float> avgFantaVote;
+    @TypeConverters(IntegerConverter.class)
+    public List<Integer> amm;
 
-    public Player(int id, String role, String name, String squad, int price, int myRating, String mate, int regularness, int pg19_20, float mv19_20, float mf19_20, int assists19_20, int amm19_20, int pg18_19, float mv18_19, float mf18_19, int assists18_19, int amm18_19) {
+    public Player(int id, String role, String name, String squad, int price, int myRating, String mate, int regularness,
+                  int fvm, List<Integer> gamesPlayed, List<Float> avgVote, List<Float> avgFantaVote, List<Integer> amm) {
         this.id = id;
         this.ownerId = -1;
         this.role = role;
@@ -37,15 +42,10 @@ public class Player {
         this.myRating = myRating;
         this.mate = mate;
         this.regularness = regularness;
-        this.pg19_20 = pg19_20;
-        this.mv19_20 = mv19_20;
-        this.mf19_20 = mf19_20;
-        this.assists19_20 = assists19_20;
-        this.amm19_20 = amm19_20;
-        this.pg18_19 = pg18_19;
-        this.mv18_19 = mv18_19;
-        this.mf18_19 = mf18_19;
-        this.assists18_19 = assists18_19;
-        this.amm18_19 = amm18_19;
+        this.fvm = fvm;
+        this.gamesPlayed = gamesPlayed;
+        this.avgVote = avgVote;
+        this.avgFantaVote = avgFantaVote;
+        this.amm = amm;
     }
 }

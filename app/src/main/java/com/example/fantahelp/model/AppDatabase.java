@@ -1,6 +1,7 @@
 package com.example.fantahelp.model;
 
 import android.content.Context;
+import android.os.Debug;
 import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
@@ -10,7 +11,9 @@ import com.example.fantahelp.R;
 import com.example.fantahelp.model.daos.*;
 import com.example.fantahelp.model.entities.*;
 import com.opencsv.CSVReader;
+import org.apache.commons.collections4.ListUtils;
 
+import java.io.Console;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -50,8 +53,10 @@ public abstract class AppDatabase extends RoomDatabase {
                             AppDatabase.class, "fantahelp_db")
                             .addCallback(sRoomDatabaseCallback)
                             .build();
-                    loadPlayers();
-                    loadSquads();
+                    if(INSTANCE.playerDao().getAllPlayers().getValue() == null){
+                        loadPlayers();
+                        loadSquads();
+                    }
                 }
             }
         }
@@ -60,7 +65,7 @@ public abstract class AppDatabase extends RoomDatabase {
 
     private static void loadPlayers() throws IOException {
         List<Player> players = new ArrayList<>();
-        InputStream is = context.getResources().openRawResource(R.raw.players21_22final);
+        InputStream is = context.getResources().openRawResource(R.raw.players22_23_notfinal);
         InputStreamReader csvStreamReader = new InputStreamReader(is);
 
         CSVReader reader = new CSVReader(csvStreamReader);
@@ -68,9 +73,9 @@ public abstract class AppDatabase extends RoomDatabase {
 
         // read line by line
         String[] record;
-        Integer mId, mPrice, mRating, mRegularness, mPg19 = null, mPg18 = null, mAss19 = null,
-                mAmm19 = null, mAss18 = null, mAmm18 = null;
-        Float mMv19 = null, mMf19 = null, mMv18 = null, mMf18 = null;
+        Integer mId, mPrice, mRating, mRegularness, mFvm;
+        List<Integer> gamesPlayed = new ArrayList<>(), amm = new ArrayList<>();
+        List<Float> avgVote = new ArrayList<>(), avgFantaVote = new ArrayList<>();
         String mRole, mName, mSquad, mMate;
         while ((record = reader.readNext()) != null) {
             mId = Integer.parseInt(record[0]);
@@ -81,36 +86,42 @@ public abstract class AppDatabase extends RoomDatabase {
             mRating = Integer.parseInt(record[5]);
             mMate = record[6];
             mRegularness = Integer.parseInt(record[7]);
-            if(!record[8].equals(""))
-                mPg19 = Integer.parseInt(record[8]);
-            if(!record[9].equals(""))
-                mMv19 = Float.parseFloat(record[9]);
-            if(!record[10].equals(""))
-                mMf19 = Float.parseFloat(record[10]);
-            if(!record[11].equals(""))
-                mAss19 = Integer.parseInt(record[11]);
-            if(!record[12].equals(""))
-                mAmm19 = Integer.parseInt(record[12]);
-            if(!record[13].equals(""))
-                mPg18 = Integer.parseInt(record[13]);
-            if(!record[14].equals(""))
-                mMv18 = Float.parseFloat(record[14]);
-            if(!record[15].equals(""))
-                mMf18 = Float.parseFloat(record[15]);
-            if(!record[16].equals(""))
-                mAss18 = Integer.parseInt(record[16]);
-            if(!record[17].equals(""))
-                mAmm18 = Integer.parseInt(record[17]);
+            mFvm = Integer.parseInt(record[8]);
+            for(int i = 9; i < record.length; i++){
+                if(!record[i].equals(""))
+                    gamesPlayed.add(Integer.parseInt(record[i]));
+                else
+                    gamesPlayed.add(null);
+                i++;
+                if(!record[i].equals(""))
+                    avgVote.add(Float.parseFloat(record[i]));
+                else
+                    avgVote.add(null);
+                i++;
+                if(!record[i].equals(""))
+                    avgFantaVote.add(Float.parseFloat(record[i]));
+                else
+                    avgFantaVote.add(null);
+                i++;
+                if(!record[i].equals(""))
+                    amm.add(Integer.parseInt(record[i]));
+                else
+                    amm.add(null);
+            }
 
-            Player player = new Player(mId, mRole, mName, mSquad, mPrice, mRating, mMate, mRegularness, mPg19, mMv19, mMf19,
-                    mAss19, mAmm19, mPg18, mMv18, mMf18, mAss18, mAmm18);
+            Player player = new Player(mId, mRole, mName, mSquad, mPrice, mRating, mMate, mRegularness, mFvm, gamesPlayed, avgVote, avgFantaVote, amm);
             players.add(player);
 
             //Log.d(TAG, "Just created: " +"Gender :" +mGender  +"Meaning :"+ mMeaning +"Name"+ mName +"Origin :" +mOrigin);
         }
-        databaseWriteExecutor.execute( () -> {
-            INSTANCE.playerDao().insertAll(players);
-        });
+        List<List<Player>> batches = ListUtils.partition(players, 16);
+        for(int i = 0; i < batches.size(); i ++){
+            int finalI = i;
+            databaseWriteExecutor.execute( () -> {
+                INSTANCE.playerDao().insertAll(batches.get(finalI));
+                System.out.println("Batch n." + finalI + "saved");
+            });
+        }
     }
 
     private static void loadSquads() throws IOException{
