@@ -21,6 +21,33 @@ public class ValueCalculator {
      */
     static Map<String, Map<Integer, Integer>> valuesPerRoles = new HashMap<>();
 
+    /*public static int getPrice(int playerId, String role){
+        int price = 1;
+        if (role.equals("P"))
+            price = getPriceP(playerId);
+        if (role.equals("D"))
+            price = getPriceD(playerId);
+        if (role.equals("C"))
+            price = getPriceC(playerId);
+        if (role.equals("A"))
+            price = getPriceA(playerId);
+        return price;
+    }
+
+    private static int getPriceA(int playerId) {
+    }
+
+    private static int getPriceC(int playerId) {
+    }
+
+    private static int getPriceP(int playerId) {
+        return 0;
+    }
+
+    private static int getPriceD(int playerId) {
+        return 0;
+    }*/
+
     public static Map<Integer, Integer> getValues(Application application, List<Player> players, String role){
         Map<Integer, Integer> values;
         if(!valuesPerRoles.containsKey(role)){
@@ -71,7 +98,7 @@ public class ValueCalculator {
 
     private static float mateMultiplier(String mate, Team team, Application application){
         List<Player> teamPlayers = DataRepository.getRepository(application).getPlayersByTeam(team);
-        if(teamPlayers != null && !mate.isEmpty()){
+        if(teamPlayers != null && mate != null){
             if(teamPlayers.stream()
                     .filter(x -> x.name.equals(mate))
                     .collect(Collectors.toList())

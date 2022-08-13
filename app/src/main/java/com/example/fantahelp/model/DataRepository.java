@@ -1,7 +1,6 @@
 package com.example.fantahelp.model;
 
 import android.app.Application;
-import android.telecom.Call;
 import androidx.lifecycle.LiveData;
 import com.example.fantahelp.model.entities.Game;
 import com.example.fantahelp.model.entities.Player;
@@ -10,7 +9,6 @@ import com.example.fantahelp.model.entities.User;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;

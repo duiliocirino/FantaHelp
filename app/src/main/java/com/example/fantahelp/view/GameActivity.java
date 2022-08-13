@@ -64,7 +64,6 @@ public class GameActivity extends FragmentActivity{
             gameViewModel = new ViewModelProvider(this, factory)
                     .get(GameViewModel.class);
 
-
             //FRAGMENT HANDLING
 
 

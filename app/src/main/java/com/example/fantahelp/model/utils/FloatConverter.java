@@ -10,7 +10,7 @@ public class FloatConverter {
     public List<Float> gettingListFromString(String genreIds) {
         List<Float> list = new ArrayList<>();
 
-        String[] array = genreIds.split(",");
+        String[] array = genreIds.split("_");
 
         for (String s : array) {
             if (!s.isEmpty()) {
@@ -30,9 +30,9 @@ public class FloatConverter {
                 if(genreIds.isEmpty() && i != null)
                     genreIds += i;
                 else if (i != null)
-                    genreIds += "," + i;
+                    genreIds += "_" + i;
                 else
-                    genreIds += ",";
+                    genreIds += "_";
             }
         }
         return genreIds;

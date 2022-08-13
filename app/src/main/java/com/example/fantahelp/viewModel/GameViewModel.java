@@ -3,6 +3,7 @@ package com.example.fantahelp.viewModel;
 import android.app.Application;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import com.example.fantahelp.model.AppDatabase;
 import com.example.fantahelp.model.DataRepository;
 import com.example.fantahelp.model.entities.Game;
 import com.example.fantahelp.model.entities.Player;
@@ -10,6 +11,7 @@ import com.example.fantahelp.model.entities.Team;
 import com.example.fantahelp.model.entities.User;
 import com.example.fantahelp.model.utils.ValueCalculator;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -49,16 +51,7 @@ public class GameViewModel extends AndroidViewModel {
         game = dataRepository.getGameById(gameId);
         allPlayers = dataRepository.getAllPlayers();
         allUsers = dataRepository.getAllUsers(gameId);
-        // This part is used to load all the previous transactions of players in the game
-        /*if(allUsers.getValue() != null) {
-            allTeams = dataRepository.getAllTeams(allUsers.getValue().stream().map(x -> x.team_id).collect(Collectors.toList()));
-            for (Team team: Objects.requireNonNull(allTeams.getValue())){
-                User user = allUsers.getValue().stream().filter(x -> x.team_id == team.id).findFirst().get();
-                for(int id: team.players_id){
-                    assignPlayer(user.name, getPlayerNameById(id), 0, true);
-                }
-            }
-        }*/
+
     }
 
     public String getSelectedRole() {

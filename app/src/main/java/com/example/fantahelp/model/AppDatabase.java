@@ -41,6 +41,11 @@ public abstract class AppDatabase extends RoomDatabase {
         @Override
         public void onCreate(@NonNull SupportSQLiteDatabase db) {
             super.onCreate(db);
+            try {
+                loadSquads();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     };
 
@@ -52,20 +57,17 @@ public abstract class AppDatabase extends RoomDatabase {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             AppDatabase.class, "fantahelp_db")
                             .addCallback(sRoomDatabaseCallback)
+                            .createFromAsset("database/player.db")
                             .build();
-                    if(INSTANCE.playerDao().getAllPlayers().getValue() == null){
-                        loadPlayers();
-                        loadSquads();
-                    }
                 }
             }
         }
         return INSTANCE;
     }
 
-    private static void loadPlayers() throws IOException {
+    public static void loadPlayers() throws IOException {
         List<Player> players = new ArrayList<>();
-        InputStream is = context.getResources().openRawResource(R.raw.players22_23_notfinal);
+        InputStream is = context.getResources().openRawResource(R.raw.players22_23_notfinal_2);
         InputStreamReader csvStreamReader = new InputStreamReader(is);
 
         CSVReader reader = new CSVReader(csvStreamReader);
@@ -73,7 +75,7 @@ public abstract class AppDatabase extends RoomDatabase {
 
         // read line by line
         String[] record;
-        Integer mId, mPrice, mRating, mRegularness, mFvm;
+        Integer mId, mPrice, mRating, mRegularness, mFvm, mExpPrice;
         List<Integer> gamesPlayed = new ArrayList<>(), amm = new ArrayList<>();
         List<Float> avgVote = new ArrayList<>(), avgFantaVote = new ArrayList<>();
         String mRole, mName, mSquad, mMate;
@@ -87,7 +89,8 @@ public abstract class AppDatabase extends RoomDatabase {
             mMate = record[6];
             mRegularness = Integer.parseInt(record[7]);
             mFvm = Integer.parseInt(record[8]);
-            for(int i = 9; i < record.length; i++){
+            mExpPrice = Integer.parseInt(record[9]);
+            for(int i = 10; i < record.length; i++){
                 if(!record[i].equals(""))
                     gamesPlayed.add(Integer.parseInt(record[i]));
                 else
@@ -109,7 +112,7 @@ public abstract class AppDatabase extends RoomDatabase {
                     amm.add(null);
             }
 
-            Player player = new Player(mId, mRole, mName, mSquad, mPrice, mRating, mMate, mRegularness, mFvm, gamesPlayed, avgVote, avgFantaVote, amm);
+            Player player = new Player(mId, -1, mRole, mName, mSquad, mPrice, mRating, mMate, mRegularness, mFvm, mExpPrice, gamesPlayed, avgVote, avgFantaVote, amm);
             players.add(player);
 
             //Log.d(TAG, "Just created: " +"Gender :" +mGender  +"Meaning :"+ mMeaning +"Name"+ mName +"Origin :" +mOrigin);
@@ -124,7 +127,7 @@ public abstract class AppDatabase extends RoomDatabase {
         }
     }
 
-    private static void loadSquads() throws IOException{
+    public static void loadSquads() throws IOException{
         List<Squad> squads = new ArrayList<>();
         InputStream is = context.getResources().openRawResource(R.raw.squads);
         InputStreamReader csvStreamReader = new InputStreamReader(is);
