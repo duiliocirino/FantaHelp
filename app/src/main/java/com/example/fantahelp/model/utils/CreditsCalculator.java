@@ -6,13 +6,13 @@ import com.example.fantahelp.model.entities.Team;
 import java.util.List;
 
 public class CreditsCalculator {
-    private static final int initialCredits = 500;
+    private static final int initialCredits = 800;
     private static int currentCredits;
     //TODO:changeable from settings
-    private static float PER_P = 0.12f;
-    private static float PER_D = 0.3f;
-    private static float PER_C = 0.3f;
-    private static float PER_A = 0.28f;
+    private static float PER_P = 0.09f;
+    private static float PER_D = 0.21f;
+    private static float PER_C = 0.24f;
+    private static float PER_A = 0.46f;
 
     public static void update(Team team){
         currentCredits = team.credits;

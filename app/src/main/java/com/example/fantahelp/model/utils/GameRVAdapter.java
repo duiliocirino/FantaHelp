@@ -22,6 +22,7 @@ public class GameRVAdapter extends RecyclerView.Adapter<GameRVAdapter.ViewHolder
     private List<Integer> regularities = new ArrayList<Integer>();
     private List<Integer> myVotes = new ArrayList<>();
     private List<Integer> values = new ArrayList<>();
+    private List<Integer> prices = new ArrayList<>();
     private Context context;
 
 
@@ -35,6 +36,7 @@ public class GameRVAdapter extends RecyclerView.Adapter<GameRVAdapter.ViewHolder
         public TextView regularityView;
         public TextView myVoteView;
         public TextView valueView;
+        public TextView priceView;
         View layout;
         public ViewHolder(View v) {
             super(v);
@@ -44,6 +46,7 @@ public class GameRVAdapter extends RecyclerView.Adapter<GameRVAdapter.ViewHolder
             regularityView = v.findViewById(R.id.regularitySugg);
             myVoteView = v.findViewById(R.id.myVoteSugg);
             valueView = v.findViewById(R.id.valueSugg);
+            priceView = v.findViewById(R.id.priceTag);
         }
     }
 
@@ -71,6 +74,12 @@ public class GameRVAdapter extends RecyclerView.Adapter<GameRVAdapter.ViewHolder
 
     public void setValues(List<Integer> values) {
         this.values.addAll(values);
+        notifyDataSetChanged();
+
+    }
+
+    public void setPrices(List<Integer> prices) {
+        this.prices.addAll(prices);
         notifyDataSetChanged();
 
     }
@@ -113,11 +122,13 @@ public class GameRVAdapter extends RecyclerView.Adapter<GameRVAdapter.ViewHolder
         final int regularity = regularities.get(position);
         final int myVote = myVotes.get(position);
         final int value = values.get(position);
+        final int price = prices.get(position);
         holder.nameView.setText(name);
         holder.squadView.setText(squadName);
         holder.regularityView.setText(String.valueOf(regularity));
         holder.myVoteView.setText(String.valueOf(myVote));
         holder.valueView.setText(String.valueOf(value));
+        holder.priceView.setText(String.valueOf(price));
         if(visibility.size() <= position) return;
         if(visibility.get(position) == false) {
             holder.layout.setVisibility(View.GONE);

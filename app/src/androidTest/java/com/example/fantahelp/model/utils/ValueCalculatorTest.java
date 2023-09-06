@@ -37,9 +37,7 @@ public class ValueCalculatorTest {
 
         // read line by line
         String[] record;
-        Integer mId, mPrice, mRating, mRegularness, mPg19 = null, mPg18 = null, mAss19 = null,
-                mAmm19 = null, mAss18 = null, mAmm18 = null;
-        Float mMv19 = null, mMf19 = null, mMv18 = null, mMf18 = null;
+        Integer mId, mPrice, mRating, mRegularness, mFvm, mExpPrice;
         String mRole, mName, mSquad, mMate;
         while ((record = reader.readNext()) != null) {
             mId = Integer.parseInt(record[0]);
@@ -50,29 +48,10 @@ public class ValueCalculatorTest {
             mRating = Integer.parseInt(record[5]);
             mMate = record[6];
             mRegularness = Integer.parseInt(record[7]);
-            if (!record[8].equals(""))
-                mPg19 = Integer.parseInt(record[8]);
-            if (!record[9].equals(""))
-                mMv19 = Float.parseFloat(record[9]);
-            if (!record[10].equals(""))
-                mMf19 = Float.parseFloat(record[10]);
-            if (!record[11].equals(""))
-                mAss19 = Integer.parseInt(record[11]);
-            if (!record[12].equals(""))
-                mAmm19 = Integer.parseInt(record[12]);
-            if (!record[13].equals(""))
-                mPg18 = Integer.parseInt(record[13]);
-            if (!record[14].equals(""))
-                mMv18 = Float.parseFloat(record[14]);
-            if (!record[15].equals(""))
-                mMf18 = Float.parseFloat(record[15]);
-            if (!record[16].equals(""))
-                mAss18 = Integer.parseInt(record[16]);
-            if (!record[17].equals(""))
-                mAmm18 = Integer.parseInt(record[17]);
+            mFvm = Integer.parseInt(record[8]);
+            mExpPrice = Integer.parseInt(record[9]);
 
-            Player player = new Player(mId, mRole, mName, mSquad, mPrice, mRating, mMate, mRegularness, mPg19, mMv19, mMf19,
-                    mAss19, mAmm19, mPg18, mMv18, mMf18, mAss18, mAmm18);
+            Player player = new Player(mId, -1, mRole, mName, mSquad, mPrice, mRating, mMate, mRegularness, mFvm, mExpPrice);
             players.add(player);
         }
 

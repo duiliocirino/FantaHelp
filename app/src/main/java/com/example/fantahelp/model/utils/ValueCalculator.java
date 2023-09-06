@@ -75,11 +75,11 @@ public class ValueCalculator {
     public static int getValue(Player player, Application application){
         Team myTeam = DataRepository.getRepository(application).getMyTeam();
         if(myTeam == null) return (int) (myVoteMultiplier(player.myRating) * squadMultiplier(player.squad, application) *
-                regularnessMultiplier(player.regularness) * roleMultiplier(player.role) * player.price ) + 1;
+                regularnessMultiplier(player.regularness) * roleMultiplier(player.role) * player.price * 1.2 ) + 1;
         return (int) (myVoteMultiplier(player.myRating) * squadMultiplier(player.squad, application) *
                 regularnessMultiplier(player.regularness) * roleMultiplier(player.role) *
                 sameRoleSameSquadMultiplier(player, myTeam, application) *
-                mateMultiplier(player.mate, myTeam, application) * player.price ) + 1;
+                mateMultiplier(player.mate, myTeam, application) * player.price * 1.2) + 1;
     }
 
     private static float sameRoleSameSquadMultiplier(Player player, Team team, Application application){

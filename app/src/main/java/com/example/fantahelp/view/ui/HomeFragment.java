@@ -142,7 +142,13 @@ public class HomeFragment extends Fragment {
             Map<Integer, Integer> values = ValueCalculator.getValues(getActivity().getApplication(), gameViewModel.getAllPlayers().getValue(), gameViewModel.getSelectedRole());
             setAdapter(gameRVAdapter, gameViewModel.getAllPlayers().getValue().stream().filter(x -> x.role.equals(gameViewModel.getSelectedRole())).sorted((a, b) -> values.get(b.id) - values.get(a.id)).collect(Collectors.toList()), recyclerView);
 
+            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity().getApplication(), android.R.layout.simple_list_item_1);
+
+            final GameRVAdapter[] mAdapter = {new GameRVAdapter(getContext())};
+
+
             updateCreditsViews(gameViewModel.getAllTeams().getValue());
+            updateSearchBar(gameViewModel.getAllPlayers().getValue(), mAdapter, arrayAdapter);
         });
         button = getActivity().findViewById(R.id.defenderButton);
         Button finalButton1 = button;
@@ -156,7 +162,12 @@ public class HomeFragment extends Fragment {
             Map<Integer, Integer> values = ValueCalculator.getValues(getActivity().getApplication(), gameViewModel.getAllPlayers().getValue(), gameViewModel.getSelectedRole());
             setAdapter(gameRVAdapter, gameViewModel.getAllPlayers().getValue().stream().filter(x -> x.role.equals(gameViewModel.getSelectedRole())).sorted((a, b) -> values.get(b.id) - values.get(a.id)).collect(Collectors.toList()), recyclerView);
 
+            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity().getApplication(), android.R.layout.simple_list_item_1);
+
+            final GameRVAdapter[] mAdapter = {new GameRVAdapter(getContext())};
+
             updateCreditsViews(gameViewModel.getAllTeams().getValue());
+            updateSearchBar(gameViewModel.getAllPlayers().getValue(), mAdapter, arrayAdapter);
         });
         button = getActivity().findViewById(R.id.midfielderButton);
         Button finalButton2 = button;
@@ -170,7 +181,12 @@ public class HomeFragment extends Fragment {
             Map<Integer, Integer> values = ValueCalculator.getValues(getActivity().getApplication(), gameViewModel.getAllPlayers().getValue(), gameViewModel.getSelectedRole());
             setAdapter(gameRVAdapter, gameViewModel.getAllPlayers().getValue().stream().filter(x -> x.role.equals(gameViewModel.getSelectedRole())).sorted((a, b) -> values.get(b.id) - values.get(a.id)).collect(Collectors.toList()), recyclerView);
 
+            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity().getApplication(), android.R.layout.simple_list_item_1);
+
+            final GameRVAdapter[] mAdapter = {new GameRVAdapter(getContext())};
+
             updateCreditsViews(gameViewModel.getAllTeams().getValue());
+            updateSearchBar(gameViewModel.getAllPlayers().getValue(), mAdapter, arrayAdapter);
         });
         button = getActivity().findViewById(R.id.attackerButton);
         Button finalButton3 = button;
@@ -184,7 +200,12 @@ public class HomeFragment extends Fragment {
             Map<Integer, Integer> values = ValueCalculator.getValues(getActivity().getApplication(), gameViewModel.getAllPlayers().getValue(), gameViewModel.getSelectedRole());
             setAdapter(gameRVAdapter, gameViewModel.getAllPlayers().getValue().stream().filter(x -> x.role.equals(gameViewModel.getSelectedRole())).sorted((a, b) -> values.get(b.id) - values.get(a.id)).collect(Collectors.toList()), recyclerView);
 
+            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity().getApplication(), android.R.layout.simple_list_item_1);
+
+            final GameRVAdapter[] mAdapter = {new GameRVAdapter(getContext())};
+
             updateCreditsViews(gameViewModel.getAllTeams().getValue());
+            updateSearchBar(gameViewModel.getAllPlayers().getValue(), mAdapter, arrayAdapter);
         });
 
 
@@ -233,6 +254,7 @@ public class HomeFragment extends Fragment {
         mAdapter.setRegular(playersRole.stream().map(x -> x.regularness).collect(Collectors.toList()));
         mAdapter.setMyVote(playersRole.stream().map(x -> x.myRating).collect(Collectors.toList()));
         mAdapter.setValues(ValueCalculator.getValues(getActivity().getApplication(), playersRole, gameViewModel.getSelectedRole()).values().stream().sorted((a, b) -> b - a).collect(Collectors.toList()));
+        mAdapter.setPrices(playersRole.stream().map(x -> x.expPrice).collect(Collectors.toList()));
         mAdapter.setVisibility(playersRole.stream().map(x -> x.role.equals(gameViewModel.getSelectedRole()) && x.ownerId == -1).collect(Collectors.toList()));
         recyclerView.setAdapter(mAdapter);
     }
@@ -254,33 +276,7 @@ public class HomeFragment extends Fragment {
         final GameRVAdapter[] mAdapter = {new GameRVAdapter(getContext())};
 
         gameViewModel.getAllPlayers().observe(getViewLifecycleOwner(), players -> {
-            Map<Integer, Integer> values = ValueCalculator.getValues(getActivity().getApplication(), players, gameViewModel.getSelectedRole());
-            List<Player> playersRole = players.stream().filter(x -> x.role.equals(gameViewModel.getSelectedRole())).sorted((a, b) -> values.get(b.id) - values.get(a.id)).collect(Collectors.toList());
-
-            RecyclerView recyclerView = getActivity().findViewById(R.id.suggestionBox);
-            recyclerView.setHasFixedSize(true);
-
-            AutoCompleteTextView searchBar = getActivity().findViewById(R.id.playerSearchBar);
-
-            arrayAdapter.clear();
-            arrayAdapter.addAll(playersRole.stream().filter(x -> x.ownerId == -1).map(x -> x.name).toArray(String[]::new));
-            searchBar.setAdapter(arrayAdapter);
-
-            if(recyclerView.getAdapter() == null) {
-                recyclerView.setAdapter(mAdapter[0]);
-                recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-            }
-
-            setAdapter(mAdapter[0], playersRole, recyclerView);
-
-            /*mAdapter[0] = new GameRVAdapter(getContext());
-            mAdapter[0].setNames(playersRole.stream().map(x -> x.name).collect(Collectors.toList()));
-            mAdapter[0].setSquadNames(playersRole.stream().map(x -> x.squad).collect(Collectors.toList()));
-            mAdapter[0].setRegular(playersRole.stream().map(x -> x.regularness).collect(Collectors.toList()));
-            mAdapter[0].setMyVote(playersRole.stream().map(x -> x.myRating).collect(Collectors.toList()));
-            mAdapter[0].setValues(ValueCalculator.getValues(getActivity().getApplication(), playersRole, gameViewModel.getSelectedRole()).values().stream().sorted((a, b) -> b - a).collect(Collectors.toList()));
-            mAdapter[0].setVisibility(playersRole.stream().map(x -> x.role.equals(gameViewModel.getSelectedRole()) && x.ownerId == -1).collect(Collectors.toList()));
-            recyclerView.setAdapter(mAdapter[0]);*/
+            updateSearchBar(players, mAdapter, arrayAdapter);
         });
         gameViewModel.getGame().observe(getViewLifecycleOwner(), game -> {
 
@@ -307,6 +303,27 @@ public class HomeFragment extends Fragment {
         });
 
         return inflater.inflate(R.layout.fragment_home, container, false);
+    }
+
+    private void updateSearchBar(List<Player> players, GameRVAdapter[] mAdapter, ArrayAdapter<String> arrayAdapter) {
+        Map<Integer, Integer> values = ValueCalculator.getValues(getActivity().getApplication(), players, gameViewModel.getSelectedRole());
+        List<Player> playersRole = players.stream().filter(x -> x.role.equals(gameViewModel.getSelectedRole())).sorted((a, b) -> values.get(b.id) - values.get(a.id)).collect(Collectors.toList());
+
+        RecyclerView recyclerView = getActivity().findViewById(R.id.suggestionBox);
+        recyclerView.setHasFixedSize(true);
+
+        AutoCompleteTextView searchBar = getActivity().findViewById(R.id.playerSearchBar);
+
+        arrayAdapter.clear();
+        arrayAdapter.addAll(playersRole.stream().filter(x -> x.ownerId == -1).map(x -> x.name).toArray(String[]::new));
+        searchBar.setAdapter(arrayAdapter);
+
+        if(recyclerView.getAdapter() == null) {
+            recyclerView.setAdapter(mAdapter[0]);
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        }
+
+        setAdapter(mAdapter[0], playersRole, recyclerView);
     }
 
     private void updateCreditsViews(List<Team> teams) {

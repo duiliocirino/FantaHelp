@@ -76,8 +76,6 @@ public abstract class AppDatabase extends RoomDatabase {
         // read line by line
         String[] record;
         Integer mId, mPrice, mRating, mRegularness, mFvm, mExpPrice;
-        List<Integer> gamesPlayed = new ArrayList<>(), amm = new ArrayList<>();
-        List<Float> avgVote = new ArrayList<>(), avgFantaVote = new ArrayList<>();
         String mRole, mName, mSquad, mMate;
         while ((record = reader.readNext()) != null) {
             mId = Integer.parseInt(record[0]);
@@ -90,29 +88,8 @@ public abstract class AppDatabase extends RoomDatabase {
             mRegularness = Integer.parseInt(record[7]);
             mFvm = Integer.parseInt(record[8]);
             mExpPrice = Integer.parseInt(record[9]);
-            for(int i = 10; i < record.length; i++){
-                if(!record[i].equals(""))
-                    gamesPlayed.add(Integer.parseInt(record[i]));
-                else
-                    gamesPlayed.add(null);
-                i++;
-                if(!record[i].equals(""))
-                    avgVote.add(Float.parseFloat(record[i]));
-                else
-                    avgVote.add(null);
-                i++;
-                if(!record[i].equals(""))
-                    avgFantaVote.add(Float.parseFloat(record[i]));
-                else
-                    avgFantaVote.add(null);
-                i++;
-                if(!record[i].equals(""))
-                    amm.add(Integer.parseInt(record[i]));
-                else
-                    amm.add(null);
-            }
 
-            Player player = new Player(mId, -1, mRole, mName, mSquad, mPrice, mRating, mMate, mRegularness, mFvm, mExpPrice, gamesPlayed, avgVote, avgFantaVote, amm);
+            Player player = new Player(mId, -1, mRole, mName, mSquad, mPrice, mRating, mMate, mRegularness, mFvm, mExpPrice);
             players.add(player);
 
             //Log.d(TAG, "Just created: " +"Gender :" +mGender  +"Meaning :"+ mMeaning +"Name"+ mName +"Origin :" +mOrigin);

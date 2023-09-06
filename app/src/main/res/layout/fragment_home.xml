@@ -58,8 +58,8 @@
                 android:ems="10"
                 android:id="@+id/playerSearchBar"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" android:layout_marginTop="20dp"
-                app:layout_constraintTop_toBottomOf="@+id/textView3"/>
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/textView3"/>
         <Button
                 android:text="@string/bet"
                 android:layout_width="wrap_content"
@@ -74,8 +74,7 @@
                 android:layout_height="wrap_content" android:id="@+id/textView3" android:layout_weight="1"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="24dp"
-                app:layout_constraintTop_toBottomOf="@+id/partialCreditsNum"/>
+                android:layout_marginTop="16dp" app:layout_constraintTop_toBottomOf="@+id/partialCreditsNum"/>
         <TextView
                 android:text="@string/_0"
                 style="@style/HomeStyle"
@@ -181,15 +180,8 @@
                 android:id="@+id/suggestionBox" app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginStart="16dp" app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginEnd="16dp"
-                app:layout_constraintHorizontal_bias="0.0" android:layout_marginTop="8dp"
+                app:layout_constraintHorizontal_bias="0.0" android:layout_marginTop="24dp"
                 app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView2"/>
-        <TextView
-                style="@style/NormalStyle"
-                android:text="@string/k"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:id="@+id/roleTextView"
-                app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginTop="16dp" android:layout_marginEnd="2dp"/>
         <TextView
                 style="@style/HomeStyle"
                 android:text="@string/remaining_credits_for_role"
@@ -200,6 +192,20 @@
                 android:layout_marginTop="16dp" app:layout_constraintTop_toBottomOf="@+id/suggestionBox"/>
         <TextView
                 style="@style/HomeStyle"
+                android:text="@string/_0_0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/partialCreditsNum"
+                app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="96dp"
+                android:layout_marginTop="24dp" app:layout_constraintTop_toBottomOf="@+id/credits4roleText"/>
+        <TextView
+                style="@style/HomeStyle"
+                android:text="@string/_0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/totalCreditsNumber"
+                android:layout_marginEnd="80dp" app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="24dp" app:layout_constraintTop_toBottomOf="@+id/totalCreditsText"/>
+        <TextView
+                style="@style/HomeStyle"
                 android:text="@string/total_credits"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" android:id="@+id/totalCreditsText"
@@ -208,18 +214,11 @@
                 app:layout_constraintEnd_toEndOf="parent" android:layout_marginTop="16dp"
                 app:layout_constraintTop_toBottomOf="@+id/suggestionBox"/>
         <TextView
-                style="@style/HomeStyle"
-                android:text="@string/_0"
+                style="@style/NormalStyle"
+                android:text="@string/k"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:id="@+id/totalCreditsNumber"
-                android:layout_marginEnd="80dp" app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="16dp" app:layout_constraintTop_toBottomOf="@+id/totalCreditsText"/>
-        <TextView
-                style="@style/HomeStyle"
-                android:text="@string/_0_0"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:id="@+id/partialCreditsNum"
-                app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="96dp"
-                android:layout_marginTop="16dp" app:layout_constraintTop_toBottomOf="@+id/credits4roleText"/>
+                android:layout_height="wrap_content" android:id="@+id/roleTextView"
+                app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="16dp" android:layout_marginEnd="2dp"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

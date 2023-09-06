@@ -24,7 +24,7 @@ public class Team {
 
     public Team(int id) {
         this.user_id = id;
-        credits = 500;
+        credits = 800;
         players_id = new ArrayList<>();
     }
 
