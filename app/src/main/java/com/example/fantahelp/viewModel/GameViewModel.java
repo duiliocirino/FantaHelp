@@ -109,7 +109,7 @@ public class GameViewModel extends AndroidViewModel {
         if(team.credits - bet < 0) return false;
         team.credits = team.credits - bet;
         if(!startup) team.players_id.add(player.id);
-        player.ownerId = user.id;
+        //TODO: player.ownerId = user.id;
 
         ValueCalculator.updateValues(getApplication(), Objects.requireNonNull(allPlayers.getValue()), player.role);
 

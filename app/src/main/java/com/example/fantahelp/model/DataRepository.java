@@ -27,7 +27,7 @@ public class DataRepository {
 
 
     DataRepository(Application application) throws IOException {
-        db = AppDatabase.getDatabase(application);
+        db = AppDatabase.getDatabase(application.getApplicationContext());
     }
 
     public static DataRepository getRepository(Application application) {
@@ -184,7 +184,7 @@ public class DataRepository {
             playersToUpdate.addAll(allPlayers.getValue().stream()
                     .filter(x -> team.players_id.contains(x.id))
                     .collect(Collectors.toList()));
-            playersToUpdate.stream().forEach(x -> x.ownerId = team.user_id);
+            //TODO: playersToUpdate.stream().forEach(x -> x.ownerId = team.user_id);
         }
         AppDatabase.databaseWriteExecutor.execute(() -> db.playerDao().updatePlayers(playersToUpdate));
     }

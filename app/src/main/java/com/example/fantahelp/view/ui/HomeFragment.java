@@ -255,7 +255,8 @@ public class HomeFragment extends Fragment {
         mAdapter.setMyVote(playersRole.stream().map(x -> x.myRating).collect(Collectors.toList()));
         mAdapter.setValues(ValueCalculator.getValues(getActivity().getApplication(), playersRole, gameViewModel.getSelectedRole()).values().stream().sorted((a, b) -> b - a).collect(Collectors.toList()));
         mAdapter.setPrices(playersRole.stream().map(x -> x.expPrice).collect(Collectors.toList()));
-        mAdapter.setVisibility(playersRole.stream().map(x -> x.role.equals(gameViewModel.getSelectedRole()) && x.ownerId == -1).collect(Collectors.toList()));
+        //TODO: MAKE THIS
+        //mAdapter.setVisibility(playersRole.stream().map(x -> x.role.equals(gameViewModel.getSelectedRole()) && x.ownerId == -1).collect(Collectors.toList()));
         recyclerView.setAdapter(mAdapter);
     }
 
@@ -315,7 +316,8 @@ public class HomeFragment extends Fragment {
         AutoCompleteTextView searchBar = getActivity().findViewById(R.id.playerSearchBar);
 
         arrayAdapter.clear();
-        arrayAdapter.addAll(playersRole.stream().filter(x -> x.ownerId == -1).map(x -> x.name).toArray(String[]::new));
+        // TODO: make this
+        //arrayAdapter.addAll(playersRole.stream().filter(x -> x.ownerId == -1).map(x -> x.name).toArray(String[]::new));
         searchBar.setAdapter(arrayAdapter);
 
         if(recyclerView.getAdapter() == null) {
