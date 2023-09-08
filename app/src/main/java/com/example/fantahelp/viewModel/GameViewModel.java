@@ -109,7 +109,6 @@ public class GameViewModel extends AndroidViewModel {
         if(team.credits - bet < 0) return false;
         team.credits = team.credits - bet;
         if(!startup) team.players_id.add(player.id);
-        //TODO: player.ownerId = user.id;
 
         ValueCalculator.updateValues(getApplication(), Objects.requireNonNull(allPlayers.getValue()), player.role);
 
@@ -117,12 +116,12 @@ public class GameViewModel extends AndroidViewModel {
         return false;
     }
 
-    public void updatePlayers(List<Team> teams) {
-        List<Team> nonNullTeams = teams.stream().filter(team -> team.players_id.size() > 0).collect(Collectors.toList());
-        dataRepository.updatePlayers(nonNullTeams);
-    }
-
     public List<Player> getPlayersByUserTeam(String username) {
         return dataRepository.getPlayersByUserTeam(username);
+    }
+
+    public boolean playerNotInTeam(Player x) {
+        return allTeams.getValue().stream()
+                .noneMatch(team -> team.players_id.contains(x.id));
     }
 }

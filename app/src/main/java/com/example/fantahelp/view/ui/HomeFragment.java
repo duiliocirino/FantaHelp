@@ -255,8 +255,8 @@ public class HomeFragment extends Fragment {
         mAdapter.setMyVote(playersRole.stream().map(x -> x.myRating).collect(Collectors.toList()));
         mAdapter.setValues(ValueCalculator.getValues(getActivity().getApplication(), playersRole, gameViewModel.getSelectedRole()).values().stream().sorted((a, b) -> b - a).collect(Collectors.toList()));
         mAdapter.setPrices(playersRole.stream().map(x -> x.expPrice).collect(Collectors.toList()));
-        //TODO: MAKE THIS
-        //mAdapter.setVisibility(playersRole.stream().map(x -> x.role.equals(gameViewModel.getSelectedRole()) && x.ownerId == -1).collect(Collectors.toList()));
+        // Check if in a team
+        mAdapter.setVisibility(playersRole.stream().map(x -> x.role.equals(gameViewModel.getSelectedRole()) && gameViewModel.playerNotInTeam(x)).collect(Collectors.toList()));
         recyclerView.setAdapter(mAdapter);
     }
 
@@ -296,9 +296,6 @@ public class HomeFragment extends Fragment {
             gameViewModel.getAllTeams().observe(getViewLifecycleOwner(), teams -> {
                 if(teams != null) {
                     updateCreditsViews(teams);
-                    if(teams.stream().anyMatch(team -> team.players_id.size() == 0)){
-                        gameViewModel.updatePlayers(teams);
-                    }
                 }
             });
         });

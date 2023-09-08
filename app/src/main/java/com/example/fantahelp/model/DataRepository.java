@@ -178,16 +178,6 @@ public class DataRepository {
         }
     }
 
-    public void updatePlayers(List<Team> nonNullTeams) {
-        List<Player> playersToUpdate = new ArrayList<>();
-        for(Team team: nonNullTeams){
-            playersToUpdate.addAll(allPlayers.getValue().stream()
-                    .filter(x -> team.players_id.contains(x.id))
-                    .collect(Collectors.toList()));
-            //TODO: playersToUpdate.stream().forEach(x -> x.ownerId = team.user_id);
-        }
-        AppDatabase.databaseWriteExecutor.execute(() -> db.playerDao().updatePlayers(playersToUpdate));
-    }
 
     public List<Player> getPlayersByUserTeam(String username) {
         User user = getUserByName(username);
