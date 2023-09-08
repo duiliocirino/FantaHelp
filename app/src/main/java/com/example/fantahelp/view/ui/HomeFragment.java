@@ -125,7 +125,6 @@ public class HomeFragment extends Fragment {
             }
         });
 
-
         //UP ROLE BUTTONS
 
 
@@ -150,6 +149,7 @@ public class HomeFragment extends Fragment {
             updateCreditsViews(gameViewModel.getAllTeams().getValue());
             updateSearchBar(gameViewModel.getAllPlayers().getValue(), mAdapter, arrayAdapter);
         });
+
         button = getActivity().findViewById(R.id.defenderButton);
         Button finalButton1 = button;
         button.setOnClickListener((e) -> {
@@ -169,6 +169,7 @@ public class HomeFragment extends Fragment {
             updateCreditsViews(gameViewModel.getAllTeams().getValue());
             updateSearchBar(gameViewModel.getAllPlayers().getValue(), mAdapter, arrayAdapter);
         });
+
         button = getActivity().findViewById(R.id.midfielderButton);
         Button finalButton2 = button;
         button.setOnClickListener((e) -> {
@@ -249,14 +250,16 @@ public class HomeFragment extends Fragment {
 
     public void setAdapter(GameRVAdapter mAdapter, List<Player> playersRole, RecyclerView recyclerView){
         mAdapter = new GameRVAdapter(getContext());
-        mAdapter.setNames(playersRole.stream().map(x -> x.name).collect(Collectors.toList()));
-        mAdapter.setSquadNames(playersRole.stream().map(x -> x.squad).collect(Collectors.toList()));
-        mAdapter.setRegular(playersRole.stream().map(x -> x.regularness).collect(Collectors.toList()));
-        mAdapter.setMyVote(playersRole.stream().map(x -> x.myRating).collect(Collectors.toList()));
-        mAdapter.setValues(ValueCalculator.getValues(getActivity().getApplication(), playersRole, gameViewModel.getSelectedRole()).values().stream().sorted((a, b) -> b - a).collect(Collectors.toList()));
-        mAdapter.setPrices(playersRole.stream().map(x -> x.expPrice).collect(Collectors.toList()));
-        // Check if in a team
-        mAdapter.setVisibility(playersRole.stream().map(x -> x.role.equals(gameViewModel.getSelectedRole()) && gameViewModel.playerNotInTeam(x)).collect(Collectors.toList()));
+        if(playersRole != null) {
+            mAdapter.setNames(playersRole.stream().map(x -> x.name).collect(Collectors.toList()));
+            mAdapter.setSquadNames(playersRole.stream().map(x -> x.squad).collect(Collectors.toList()));
+            mAdapter.setRegular(playersRole.stream().map(x -> x.regularness).collect(Collectors.toList()));
+            mAdapter.setMyVote(playersRole.stream().map(x -> x.myRating).collect(Collectors.toList()));
+            mAdapter.setValues(ValueCalculator.getValues(getActivity().getApplication(), playersRole, gameViewModel.getSelectedRole()).values().stream().sorted((a, b) -> b - a).collect(Collectors.toList()));
+            mAdapter.setPrices(playersRole.stream().map(x -> x.expPrice).collect(Collectors.toList()));
+            // Check if in a team
+            mAdapter.setVisibility(playersRole.stream().map(x -> x.role.equals(gameViewModel.getSelectedRole()) && gameViewModel.playerNotInTeam(x)).collect(Collectors.toList()));
+        }
         recyclerView.setAdapter(mAdapter);
     }
 
@@ -304,25 +307,26 @@ public class HomeFragment extends Fragment {
     }
 
     private void updateSearchBar(List<Player> players, GameRVAdapter[] mAdapter, ArrayAdapter<String> arrayAdapter) {
-        Map<Integer, Integer> values = ValueCalculator.getValues(getActivity().getApplication(), players, gameViewModel.getSelectedRole());
-        List<Player> playersRole = players.stream().filter(x -> x.role.equals(gameViewModel.getSelectedRole())).sorted((a, b) -> values.get(b.id) - values.get(a.id)).collect(Collectors.toList());
+        if(players != null) {
+            Map<Integer, Integer> values = ValueCalculator.getValues(getActivity().getApplication(), players, gameViewModel.getSelectedRole());
+            List<Player> playersRole = players.stream().filter(x -> x.role.equals(gameViewModel.getSelectedRole())).sorted((a, b) -> values.get(b.id) - values.get(a.id)).collect(Collectors.toList());
 
-        RecyclerView recyclerView = getActivity().findViewById(R.id.suggestionBox);
-        recyclerView.setHasFixedSize(true);
+            RecyclerView recyclerView = getActivity().findViewById(R.id.suggestionBox);
+            recyclerView.setHasFixedSize(true);
 
-        AutoCompleteTextView searchBar = getActivity().findViewById(R.id.playerSearchBar);
+            AutoCompleteTextView searchBar = getActivity().findViewById(R.id.playerSearchBar);
 
-        arrayAdapter.clear();
-        // TODO: make this
-        //arrayAdapter.addAll(playersRole.stream().filter(x -> x.ownerId == -1).map(x -> x.name).toArray(String[]::new));
-        searchBar.setAdapter(arrayAdapter);
+            arrayAdapter.clear();
+            arrayAdapter.addAll(playersRole.stream().filter(x -> gameViewModel.playerNotInTeam(x)).map(x -> x.name).toArray(String[]::new));
+            searchBar.setAdapter(arrayAdapter);
 
-        if(recyclerView.getAdapter() == null) {
-            recyclerView.setAdapter(mAdapter[0]);
-            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            if (recyclerView.getAdapter() == null) {
+                recyclerView.setAdapter(mAdapter[0]);
+                recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            }
+
+            setAdapter(mAdapter[0], playersRole, recyclerView);
         }
-
-        setAdapter(mAdapter[0], playersRole, recyclerView);
     }
 
     private void updateCreditsViews(List<Team> teams) {

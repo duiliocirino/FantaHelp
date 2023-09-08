@@ -51,7 +51,7 @@ public class ValueCalculatorTest {
             mFvm = Integer.parseInt(record[8]);
             mExpPrice = Integer.parseInt(record[9]);
 
-            Player player = new Player(mId, -1, mRole, mName, mSquad, mPrice, mRating, mMate, mRegularness, mFvm, mExpPrice);
+            Player player = new Player(mId, mRole, mName, mSquad, mPrice, mRating, mMate, mRegularness, mFvm, mExpPrice);
             players.add(player);
         }
 

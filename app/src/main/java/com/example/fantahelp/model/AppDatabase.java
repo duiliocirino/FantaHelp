@@ -42,6 +42,7 @@ public abstract class AppDatabase extends RoomDatabase {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             AppDatabase.class, "fantahelp_db")
                             .createFromAsset("database/player.db")
+                            .fallbackToDestructiveMigration()
                             .build();
                 }
             }

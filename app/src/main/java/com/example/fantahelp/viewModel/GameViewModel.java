@@ -121,7 +121,9 @@ public class GameViewModel extends AndroidViewModel {
     }
 
     public boolean playerNotInTeam(Player x) {
-        return allTeams.getValue().stream()
+        if(allTeams.getValue() != null)
+            return allTeams.getValue().stream()
                 .noneMatch(team -> team.players_id.contains(x.id));
+        return true;
     }
 }
